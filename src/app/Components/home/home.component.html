@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+</head>
+<body>
+
+  <!--<header>
+    Header Works...
+  </header>-->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" (click)="toggleOffcanvas()">
+        <!--<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">-->
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="" routerLink="/test" target="_blank">Data Lineage</a>
+      <!--<div style="height:40px; margin-top:0px; margin-bottom:0px">
+        <p id="sect2" style=" height: 30px; width: 30px; margin-top:5px; margin-bottom:0px"></p>
+        <p id="sect1" style=" height: 45px; width: 50px; margin-top:-40px; margin-bottom:0px; margin-left:30px"></p>
+      </div>-->
+      <p id="sect1" style=" height: 42px; width: 50px; margin-top:-7px; margin-bottom:0px; margin-left:30px"></p>
+    </div>
+  </nav>
+
+  <div class="offcanvas offcanvas-start text-bg-dark" style="margin-top:55px" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Data Model Filteration</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-toggle="collapse" data-bs-target="#offcanvasDarkNavbar" (click)="toggleOffcanvas()"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+        <li>
+          <label>Client</label>
+          <select class="form-control" [(ngModel)]="selectedClient" (change)="clientSelectionChanged()" style="margin: 5px; margin-top:10px">
+            <option>None</option>
+            <option *ngFor="let client of clients">{{client}}</option>
+          </select>
+          <hr />
+        </li>
+
+        <li *ngIf="selectedClient != 'None'">
+          <label>Cluster</label>
+          <div class="dropdown" style="margin: 5px; margin-top:10px; width:350px">
+            <button class="dropdown-toggle"
+                    type="button"
+                    id="multiSelect"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    style="height:40px; width:350px; border-radius:8px; text-align:start">
+              {{ getSelectedClustersLabel() }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px">
+              <label class="dropdown-item" *ngFor="let cluster of clusters">
+                <input type="checkbox" [(ngModel)]="cluster.checked" name="selectedCluster" (change)="ClusterCheckboxChanged(cluster)" />
+                {{cluster.label}}
+              </label>
+            </div>
+          </div>
+          <hr />
+        </li>
+
+        <li *ngIf="selectedCluster.length > 0">
+          <label>Sub-Cluster</label>
+          <div class="dropdown" style="margin: 5px; margin-top:10px; width:350px">
+            <button class="dropdown-toggle"
+                    type="button"
+                    id="multiSelect"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    style="height:40px; width:350px; border-radius:8px; text-align:start">
+              {{ getSelectedSubClustersLabel() }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px">
+              <label class="dropdown-item" *ngFor="let subCluster of subClusters">
+                <input type="checkbox" [(ngModel)]="subCluster.checked" name="selectedSubCluster" />
+                {{subCluster.label}}
+              </label>
+            </div>
+          </div>
+          <hr />
+        </li>
+
+        <li *ngIf="selectedClient != 'None'">
+          <label>Category</label>
+          <div class="dropdown" style="margin: 5px; margin-top:10px; width:350px">
+            <button class="dropdown-toggle"
+                    type="button"
+                    id="multiSelect"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    style="height:40px; width:350px; border-radius:8px; text-align:start">
+              {{ getSelectedCategoriesLabel() }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px">
+              <label class="dropdown-item" *ngFor="let category of categories">
+                <input type="checkbox" [(ngModel)]="category.checked" name="selectedCategory" (change)="CategoryCheckboxChanged(category)" />
+                {{category.label}}
+              </label>
+            </div>
+          </div>
+          <hr />
+        </li>
+
+        <li *ngIf="selectedCategory.length > 0">
+          <label>Sub-Category</label>
+          <div class="dropdown" style="margin: 5px; margin-top:10px; width:350px">
+            <button class="dropdown-toggle"
+                    type="button"
+                    id="multiSelect"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    style="height:40px; width:350px; border-radius:8px; text-align:start">
+              {{ getSelectedSubCategoriesLabel() }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px">
+              <label class="dropdown-item" *ngFor="let subCategory of subCategories">
+                <input type="checkbox" [(ngModel)]="subCategory.checked" name="selectedSubCategory" />
+                {{subCategory.label}}
+              </label>
+            </div>
+          </div>
+          <hr />
+        </li>
+        <!--<li *ngIf="selectedCluster.length > 0">
+          <label>Sub Category</label>
+          <select class="form-control" style="margin: 5px; margin-top:10px">
+            <option>None</option>
+            <option *ngFor="let item of category2" [value]="item">{{item}}</option>
+          </select>
+          <hr />
+        </li>-->
+
+
+        <!--<li *ngIf="(selectedCluster != 'None' && selectedSubCluster != 'None')">-->
+        <!--<li *ngIf="selectedCluster.length > 0">
+    <label>Category</label>
+    <select class="form-control" [(ngModel)]="selectedCategory" (change)="categorySelectionChanged()" style="margin: 5px; margin-top:10px">
+      <option>None</option>
+      <option *ngFor="let item of category1" [value]="item">{{item}}</option>
+    </select>
+    <hr />
+  </li>-->
+        <!--<li *ngIf="(selectedCluster != 'None' && selectedSubCluster != 'None' && selectedCategory != 'None')">-->
+        <!--<li>
+    <mat-form-field>
+      <mat-label>State</mat-label>
+      <mat-select>
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let state of states" [value]="state">{{state}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </li>-->
+        <!--<li class="nav-item">
+    <a class="nav-link" href="#">Link</a>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Dropdown
+    </a>
+    <ul class="dropdown-menu dropdown-menu-dark">
+      <li><a class="dropdown-item" href="#">Action</a></li>
+      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+      <li><a class="dropdown-item" href="#">Something else here</a></li>
+    </ul>
+  </li>-->
+      </ul>
+      <form *ngIf="selectedClient != 'None'" class="d-flex mt-3" role="search">
+        <!--<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+        <button class="btn btn-success" type="submit" data-bs-toggle="collapse" data-bs-target="#offcanvasDarkNavbar" style="margin-left:280px" (click)="OnSearchClicked()">Search</button>
+      </form>
+    </div>
+  </div>
+
+  <!--<div style="background-color: #0056b3;height: 35px">-->
+    <!--<a id="logoutbtn" href="" (click)="OnExportClick()"></a>-->
+
+    <!--<label style="color:whitesmoke; margin-left: 10px; margin-top:3px">Cluster</label>
+    <label style="color:whitesmoke; margin-left: 5px; margin-right: 5px">-></label>
+    <label style="color:whitesmoke">SubCluster</label>
+    <label style="color:whitesmoke; margin-left: 5px; margin-right: 5px">-></label>
+    <label style="color:whitesmoke">Category1</label>
+    <label style="color:whitesmoke; margin-left: 5px; margin-right: 5px">-></label>
+    <label style="color:whitesmoke">Category2</label>
+    <button id="logoutbtn" (click)="OnLogoutClick()">
+    </button>
+    <button id="exportbtn" (click)="OnExportClick()">
+    </button>-->
+  <!--</div>-->
+
+
+  <!--<div style="background-color: #0056b3;height: 35px">
+  </div>-->
+  <div class="main-content" style="position: absolute" [@offcanvasAnimation]="isOffcanvasOpen ? 'open' : 'closed'">
+    <!--<app-data-grid></app-data-grid>-->
+    <div *ngIf="IsDataVisible">
+      <app-data-heirarchy></app-data-heirarchy>
+    </div>
+    <div *ngIf="!IsDataVisible">
+      <app-overview></app-overview>
+    </div>
+  </div>
+
+</body>
+</html>

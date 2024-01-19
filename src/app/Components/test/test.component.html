@@ -1,0 +1,192 @@
+<!--<div class="row ml-0 mr-0 pr-3 pt-4">
+  <div class="col-9">
+    <h3> Data Model Filteration</h3>
+  </div>
+  <div class="col-3">
+    <div class="form-inline justify-content-end">
+      <div class="input-group mr-2">
+        <input type="text" class="form-control input-search" [(ngModel)]="filterSearchText" placeholder="Search" (keyup.enter)="search()">-->
+
+        <!--<span class="search-box"></span>-->
+        <!--<div class="input-group-append">
+          <span class="input-group-text" (click)="search()">
+            <fa-icon [icon]="searchIcon"></fa-icon>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-3">
+    <div class="form-inline justify-icon-end">
+      <ng-multiselect-dropdown [placeholder]="'Select Category'"
+                               [settings]="dropdownSettings"
+                               [data]="categoryList"
+                               [(ngModel)]="selectedCategoryItems"
+                               (onSelect)="onItemChange($event, false)"
+                               (onSelectAll)="onItemChange($event, true)"
+                               (onDeSelect)="onItemChange($event, false)">
+      </ng-multiselect-dropdown>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="form-inline justify-icon-end">
+      <ng-multiselect-dropdown [placeholder]="'Select Asset Class'"
+                               [settings]="dropdownSettings"
+                               [data]="assetClassList"
+                               [(ngModel)]="selectedAssetClassItems"
+                               (onSelect)="onAssetClassChange($event, false)"
+                               (onSelectAll)="onAssetClassChange($event, true)"
+                               (onDeSelect)="onAssetClassChange($event, false)">
+      </ng-multiselect-dropdown>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="form-inline justify-content-column-chooser-end">
+      <button type="button" class="btn btn-success pull-right mr-2" tooltip="Column Chooser" placement="right" (click)="openModal(template)">
+        <fa-icon style="right: 10px; top: 6px;" [icon]="columnChooserIcon"></fa-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="row ml-0 mr-0 pr-3">
+  <div class="col white-bg pt-3 pb-3 table-body">
+    <div class="accordion-box" *ngFor="let test of testList; let i = index">
+      <div class="accordion-header" (click)="accordionMain(i+1)">
+        {{test.name}}
+        <div class="icons-box">-->
+          <!--<i class="fa " [ngClass]="mainAccordion==i +1 ? 'fa-angle-up': 'fa-angle-down' "></i>-->
+
+        <!--</div>
+        <button type="button" class="export-icons-box1" (click)="exportData()">
+        </button>
+      </div>
+      <div class="accordion-body" *ngIf="mainAccordion.includes(i+1)">-->
+        <!--<div class="accordion-body">-->
+        <!--<div class="sub-accordion-box " *ngFor="let subTest of test.subTestList; let rIndex=index ">
+          <div class="sub-accordion-header " (click)="accordionSub(i, rIndex)">
+            {{subTest.name}}
+
+            <div class="icons-box">-->
+              <!--<i class="fa" [ngClass]="subAccordion == rIndex ?'fa-angle-up':'fa-angle-down'"></i>-->
+            <!--</div>
+              <button type="button" class="export-icons-box1" (click)="exportData()">
+                
+              </button>
+          </div>-->
+          <!--<div class="sub-accordion-body" *ngIf="(subAccordion[i].includes(rIndex))">-->
+          <!--<div class="sub-accordion-body" *ngIf="subAccordion.includes(rIndex) && mainAccordion.includes(i+1) && i == mainAccIndex">
+            <table>
+              <thead>
+                <tr>
+                  <ng-container *ngFor="let defaultViewColumn of defaultViewColumns">
+                    <th *ngIf="defaultViewColumn.showColumn === true" style="width:stretch">
+                      <span (click)="sort('id', rIndex)" *ngIf="defaultViewColumn.columnName === 'Id'">
+                        Id <fa-icon [icon]="sortIcon"></fa-icon>
+                      </span>
+
+                      <span (click)="sort('category', rIndex)" *ngIf="defaultViewColumn.columnName === 'Category'">
+                        Category <fa-icon [icon]="sortIcon"></fa-icon>
+                      </span>
+
+                      <span (click)="sort('gainFieldName', rIndex)" *ngIf="defaultViewColumn.columnName === 'GainFieldName'">
+                        Gain Field Name <fa-icon [icon]="sortIcon"></fa-icon>
+                      </span>
+
+                      <span (click)="sort('bbgMnemonicName', rIndex)" *ngIf="defaultViewColumn.columnName === 'BbbgMnemonicName'">
+                        BBG Mnemonic Name <fa-icon [icon]="sortIcon"></fa-icon>
+                      </span>
+
+                      <span (click)="sort('scdModelFieldName', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdModelFieldName'">
+                        SCD Model Field Name <fa-icon [icon]="sortIcon"></fa-icon>
+                      </span>
+
+                      <span (click)="sort('assetClass', rIndex)" *ngIf="defaultViewColumn.columnName === 'AssetClass'">
+                        Asset Class <fa-icon [icon]="sortIcon"></fa-icon>
+                      </span>
+                    </th>
+                  </ng-container>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let listColumn of subTest.subTestDataList" style="width:100%;">
+                  <ng-container *ngFor="let defaultViewColumn of defaultViewColumns">
+                    <td *ngIf="defaultViewColumn.showColumn === true" style="width:stretch">
+                      <span *ngIf="defaultViewColumn.columnName === 'Id'">
+                        {{listColumn.id}}-->
+                        <!--<span class="custom-control custom-switch custom-control-inline align-middle">
+                    
+                          <input type="checkbox" class="custom-control-input" [(ngModel)]="listColumn.id" id="select_{{i}}" (change)="showHideColumn(listColumn)">
+                          <label class="custom-control-label switch" for="select_{{i}}">
+                            <span class="status-inactive" *ngIf="listColumn.id"> Show</span>
+                            <span class="status-active" *ngIf="!listColumn.id"> Hide</span>
+                          </label>
+                        </span>-->
+                      <!--</span>
+                    <span *ngIf="defaultViewColumn.columnName === 'Category'">{{listColumn.category}}</span>
+                    <span *ngIf="defaultViewColumn.columnName === 'GainFieldName'">{{listColumn.gainFieldName}}</span>
+                    <span *ngIf="defaultViewColumn.columnName === 'BbbgMnemonicName'">{{listColumn.bbgMnemonicName}}</span>
+                    <span *ngIf="defaultViewColumn.columnName === 'ScdModelFieldName'">{{listColumn.scdModelFieldName}}</span>
+                    <span *ngIf="defaultViewColumn.columnName === 'AssetClass'">{{listColumn.assetClass}}</span>
+                    </td>
+                  </ng-container>
+                  <td>
+                    <button class="plus-button" *ngIf="!newDataList.includes(listColumn.id)" (click)="addData(listColumn)">
+                      <fa-icon [icon]="plusIcon"></fa-icon>
+                    </button>
+                    <button class="plus-button" *ngIf="newDataList.includes(listColumn.id) && newDataList.length > 0" (click)="removeData(listColumn)">
+                      <fa-icon [icon]="minusIcon"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">All Columns</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="col-12 p-1">
+      <ul class="nav nav-tabs setting-tab">
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': selecttabbox == 1}">Table Column Setting</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 setting-hieght p-1" *ngIf="selecttabbox == 1">
+      <div class="accordin-list-box border">
+          <ng-container *ngFor="let item of defaultViewColumns; let i = index">
+            <div class="example-box">
+              {{item.columnName}}
+              <div class="action-data">
+                <div class="custom-control custom-switch custom-control-inline align-middle">-->
+                  <!--<input type="checkbox" class="custom-control-input"
+                         [(ngModel)]="item.showColumn" id="select_{{i}}" (change)="showHideColumn(item)">-->
+                  <!--<input type="checkbox" class="custom-control-input" [(ngModel)]="item.showColumn" id="select_{{i}}" (change)="showHideColumn(item)">
+                  <label class="custom-control-label" for="select_{{i}}">
+                    <span class="status-inactive" *ngIf="item.showColumn">Show</span>
+                    <span class="status-active" *ngIf="!item.showColumn">Hide</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+      </div>
+      </div>
+    </div>
+</ng-template>-->
