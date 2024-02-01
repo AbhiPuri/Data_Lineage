@@ -11,7 +11,7 @@
 }
 
 .form-inline.justify-content-end {
-  margin-left: 70px;
+  margin-left: 80px;
   height: 34px !important;
   min-height: 30px;
   max-width: 300px;
@@ -27,7 +27,8 @@
 }
 
 .form-inline.justify-content-column-chooser-end {
-  margin-left: 320px;
+  margin-left: 800px;
+  /*margin-right: 60px;*/
   height: 24px !important;
   min-height: 50px;
   max-width: 50px;
@@ -70,4 +71,18 @@ tr:nth-child(even) {
 
 th {
   background: #a2add0;
+  min-width: stretch;
 }
+.table-container {
+  overflow-x: auto !important;
+  width: 100%;
+  white-space: nowrap;
+  border-spacing: 20px;
+
+}
+
+.table-container th, .table-container td {
+    padding: 10px; /* Adjust the padding as needed */
+}
+
+ 

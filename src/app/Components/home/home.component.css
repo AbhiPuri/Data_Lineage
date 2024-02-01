@@ -1,5 +1,5 @@
 #sect1 {
-  height: 650px;
+  /*height: 650px;*/
   color: #fff;
   background-image: url("../../Images/User2.png");
   background-size: 100%;
@@ -7,7 +7,7 @@
 }
 
 #sect2 {
-  height: 650px;
+  /*height: 650px;*/
   color: #fff;
   background-image: url("../../Images/Logout5.png");
   background-size: 100%;

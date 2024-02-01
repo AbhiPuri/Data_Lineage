@@ -39,7 +39,6 @@ export class DataHeirarchyComponent implements OnInit {
   sortProperty: string = 'id';
   sortOrder = 1;
   defaultViewColumns = [
-   /* { columnName: "Id", isRequired: true, showColumn: true },*/
     { columnName: "Category", isRequired: true, showColumn: true },
     { columnName: "SubCategory", isRequired: true, showColumn: true },
     { columnName: "EdmFieldName", isRequired: true, showColumn: true },
@@ -47,9 +46,9 @@ export class DataHeirarchyComponent implements OnInit {
     { columnName: "EdmFieldExportName", isRequired: false, showColumn: false },
     { columnName: "EdmFieldDefinition", isRequired: false, showColumn: false },
     { columnName: "EdmFieldMandatory", isRequired: true, showColumn: true },
-    { columnName: "EdmFieldNormalization", isRequired: true, showColumn: true },
+    { columnName: "EdmFieldNormalization", isRequired: false, showColumn: false },
     { columnName: "EdmFieldDerivation", isRequired: false, showColumn: false },
-    { columnName: "EdmFieldSpecification", isRequired: false, showColumn: false },
+    { columnName: "EdmFieldSpecification", isRequired: true, showColumn: true },
     { columnName: "ScdFieldTranslation", isRequired: false, showColumn: false },
     { columnName: "ScdFieldFormula", isRequired: false, showColumn: false },
     { columnName: "ScdFieldSpecification", isRequired: false, showColumn: false },
@@ -484,6 +483,7 @@ export class DataHeirarchyComponent implements OnInit {
   }
 
   getList() {
+    this.modelData = [];
     let clustersSet = new Set(this.dataArray.map(x => x.CLUSTER_NAME));
     let distinctClusters = Array.from(clustersSet);
 
@@ -772,16 +772,13 @@ export class DataHeirarchyComponent implements OnInit {
   }
 
   onItemChange(item: any, isSelectedAll: boolean) {
-    console.log(item);
-    console.log(this.selectedCategoryItems);
-
+    this.getList();
+    if (this.selectedCategoryItems.length == 0) 
+      return;
     this.previousCategoryList = [];
     let newCategoryList = this.previousSubCategoryList.length > 0 ? this.previousSubCategoryList : this.modelData;
     this.modelData = [];
-    if (this.selectedCategoryItems.length == 0) {
-      this.getApiData();
-      return;
-    }
+   
     newCategoryList.forEach((e: any) => {
       let subHeaderArr: any[] = [];
       let test: any[] = [];
@@ -821,13 +818,11 @@ export class DataHeirarchyComponent implements OnInit {
         this.modelData.push(model);
     });
     this.previousCategoryList = this.modelData;
-    // console.log(this.testList)
 
   }
 
   onSubCategoryChange(item: any, isSelectedAll: boolean) {
-    console.log(this.selectedCategoryItems);
-  
+    this.getList();
     this.previousSubCategoryList = [];
     let newSubCategoryList = this.previousCategoryList.length > 0 ? this.previousCategoryList : this.modelData;
 
@@ -849,14 +844,11 @@ export class DataHeirarchyComponent implements OnInit {
               let subcategoryArray: string[] = y.subCategory.split(', ');
               if ((subcategoryArray.some((r: any) => this.selectedSubCategoryItems.includes(r)) && isSelectedAll == false) || (subcategoryArray.some((r: any) => item.includes(r)) && isSelectedAll == true))
               {
-                // if ((this.selectedSubCategoryItems.includes(y.subCategory) && isSelectedAll == false) || (item.includes(y.subCategory) && isSelectedAll == true))
                 dataArr.push(y);
               }
             });
           }
           if (dataArr.length > 0) {
-            console.log("x: ", x)
-            console.log("e", e)
             subModel = {
               subClusterId: x.subClusterId,
               name: x.name,
@@ -881,12 +873,9 @@ export class DataHeirarchyComponent implements OnInit {
       this.modelData = this.previousCategoryList;
     }
     else {
-      this.modelData = [];
-        this.getApiData();
         return;
     }
 
-    console.log(this.testList)
   }
 
   sort(property: string, subIndex: any) {
