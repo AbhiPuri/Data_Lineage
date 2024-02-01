@@ -63,10 +63,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "DataLineage:build:production"
+              "buildTarget": "DataLineage:build:production"
             },
             "development": {
-              "browserTarget": "DataLineage:build:development"
+              "buildTarget": "DataLineage:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -74,7 +74,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "DataLineage:build"
+            "buildTarget": "DataLineage:build"
           }
         },
         "test": {

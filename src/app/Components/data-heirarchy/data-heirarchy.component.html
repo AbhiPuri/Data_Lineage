@@ -1,237 +1,260 @@
-<div class="row ml-0 mr-0 pr-3 pt-4" style="margin:0px; margin-top:-10px">
-  <div class="col-9">
-    <h3> Data Model Filteration</h3>
-  </div>
-  <div class="col-3">
-    <div class="form-inline justify-content-end">
-      <div class="input-group mr-2">
-        <input type="text" class="form-control input-search" [(ngModel)]="filterSearchText" placeholder="Search" (keyup.enter)="search()">
+<div class="page-alignment">
+  <div class="row ml-0 mr-0 pr-3 pt-4">
+    <div class="col-9">
+      <h3> Data Model Filteration</h3>
+    </div>
+    <div class="col-3">
+      <div class="form-inline justify-content-end">
+        <div class="input-group mr-2">
+          <input type="text" class="form-control input-search" [(ngModel)]="filterSearchText" placeholder="Search" (keyup.enter)="search()">
 
-        <!--<span class="search-box"></span>-->
-        <div class="input-group-append">
-          <span class="input-group-text" (click)="search()">
-            <fa-icon [icon]="searchIcon"></fa-icon>
-          </span>
+          <!--<span class="search-box"></span>-->
+          <div class="input-group-append">
+            <span class="input-group-text" (click)="search()">
+              <fa-icon [icon]="searchIcon"></fa-icon>
+            </span>
+          </div>
         </div>
+
       </div>
-
     </div>
   </div>
-</div>
-
-<div class="row"  style="margin:0px">
-  <div class="col-3">
-    <div class="form-inline justify-icon-end">
-      <ng-multiselect-dropdown [placeholder]="'Select Category'"
-                               [settings]="dropdownSettings"
-                               [data]="categoryList"
-                               [(ngModel)]="selectedCategoryItems"
-                               (onSelect)="onItemChange($event, false)"
-                               (onSelectAll)="onItemChange($event, true)"
-                               (onDeSelect)="onItemChange($event, false)">
-      </ng-multiselect-dropdown>
+  <div class="row">
+    <div class="col-3" *ngIf="categoryList.length > 0">
+      <div class="form-inline justify-icon-end">
+        <ng-multiselect-dropdown [placeholder]="'Select Category'"
+                                 [settings]="dropdownSettings"
+                                 [data]="categoryList"
+                                 [(ngModel)]="selectedCategoryItems"
+                                 (onSelect)="onItemChange($event, false)"
+                                 (onSelectAll)="onItemChange($event, true)"
+                                 (onDeSelect)="onItemChange($event, false)">
+        </ng-multiselect-dropdown>
+      </div>
     </div>
-  </div>
-  <div class="col-3">
-    <div class="form-inline justify-icon-end">
-      <ng-multiselect-dropdown [placeholder]="'Select Sub Category'"
-                               [settings]="dropdownSettings"
-                               [data]="subCategoryList"
-                               [(ngModel)]="selectedSubCategoryItems"
-                               (onSelect)="onSubCategoryChange($event, false)"
-                               (onSelectAll)="onSubCategoryChange($event, true)"
-                               (onDeSelect)="onSubCategoryChange($event, false)">
-
-      </ng-multiselect-dropdown>
+    <div class="col-3"  *ngIf="subCategoryList.length > 0">
+      <div class="form-inline justify-icon-end">
+        <ng-multiselect-dropdown [placeholder]="'Select Sub Category'"
+                                 [settings]="dropdownSettings"
+                                 [data]="subCategoryList"
+                                 [(ngModel)]="selectedSubCategoryItems"
+                                 (onSelect)="onSubCategoryChange($event, false)"
+                                 (onSelectAll)="onSubCategoryChange($event, true)"
+                                 (onDeSelect)="onSubCategoryChange($event, false)">
+        </ng-multiselect-dropdown>
+      </div>
     </div>
-  </div>
 
-  <div class="col-6">
-    <div class="form-inline justify-content-column-chooser-end">
-      <button type="button" class="btn btn-success pull-right mr-2" tooltip="Column Chooser" placement="right" (click)="openModal(template)">
-        <fa-icon style="right: 10px; top: 6px;" [icon]="columnChooserIcon"></fa-icon>
-      </button>
-    </div>
-  </div>
-</div>
-
-<div class="row ml-0 mr-0 pr-3" style="margin: 0px; margin-top: -10px">
-  <div class="col white-bg pt-3 pb-3 table-body">
-    <div class="accordion-box" *ngFor="let test of testList; let i = index">
-      <div class="accordion-header" (click)="accordionMain(i+1)">
-        {{test.name}}
-        <div class="icons-box">
-          <!--<i class="fa " [ngClass]="mainAccordion==i +1 ? 'fa-angle-up': 'fa-angle-down' "></i>-->
-
-        </div>
-        <button type="button" class="export-icons-box1" (click)="exportData()">
+    <!--<div class="col-3">
+      <div class="form-inline justify-content-tree-end">
+        <button type="button" class="btn btn-success mr-2" tooltip="Tree Popup" (click)="openHierarchyModal()">
+          <fa-icon [icon]="treeIcon"></fa-icon>
         </button>
       </div>
-      <div class="accordion-body" *ngIf="mainAccordion.includes(i+1)">
-        <!--<div class="accordion-body">-->
-        <div class="sub-accordion-box " *ngFor="let subTest of test.subTestList; let rIndex=index ">
-          <div class="sub-accordion-header " (click)="accordionSub(i, rIndex)">
-            {{subTest.name}}
+    </div>-->
+    <div class="col-3">
+      <div class="form-inline justify-content-column-chooser-end">
+        <button type="button" class="btn btn-success pull-right mr-2" tooltip="Column Chooser" placement="right" (click)="openModal(template)">
+          <fa-icon style="right: 10px; top: 6px;" [icon]="columnChooserIcon"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
 
-            <div class="icons-box">
-              <!--<i class="fa" [ngClass]="subAccordion == rIndex ?'fa-angle-up':'fa-angle-down'"></i>-->
-            </div>
-            <button type="button" class="export-icons-box1" (click)="exportData()">
-            </button>
+  <div class="row ml-0 mr-0 pr-3">
+    <div class="col white-bg pt-3 pb-3 table-body">
+      <div class="accordion-box" *ngFor="let cluster of modelData; let i = index">
+        <div class="accordion-header" (click)="accordionMain(i+1)">
+          {{cluster.name}}
+          <div class="icons-box">
+            <!--<i class="fa " [ngClass]="mainAccordion==i +1 ? 'fa-angle-up': 'fa-angle-down' "></i>-->
+
           </div>
-          <!--<div class="sub-accordion-body" *ngIf="(subAccordion[i].includes(rIndex))">-->
-          <div class="sub-accordion-body" *ngIf="subAccordion.includes(rIndex) && mainAccordion.includes(i+1) && i == mainAccIndex">
-            <table>
-              <thead>
-                <tr>
-                  <ng-container *ngFor="let defaultViewColumn of defaultViewColumns">
-                    <th *ngIf="defaultViewColumn.showColumn === true" style="width:stretch">
-                      <span (click)="sort('id', rIndex)" *ngIf="defaultViewColumn.columnName === 'Id'">
-                        Id <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+          <button type="button" class="export-icons-box1" (click)="exportData(cluster, null)">
+          </button>
+        </div>
+        <div class="accordion-body" *ngIf="mainAccordion.includes(i+1)">
+          <!--<div class="accordion-body">-->
+          <div class="sub-accordion-box " *ngFor="let subCluster of cluster.subClusterDataList; let rIndex=index ">
+            <div class="sub-accordion-header " (click)="accordionSub(i, rIndex)">
+              {{subCluster.name}}
 
-                      <span (click)="sort('category', rIndex)" *ngIf="defaultViewColumn.columnName === 'Category'">
-                        Category <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+              <div class="icons-box">
+                <!--<i class="fa" [ngClass]="subAccordion == rIndex ?'fa-angle-up':'fa-angle-down'"></i>-->
+              </div>
+              <button type="button" class="export-icons-box1" (click)="exportData(cluster, subCluster)">
+              </button>
+            </div>
+            <!--<div class="sub-accordion-body" *ngIf="(subAccordion[i].includes(rIndex))">-->
+            <div class="sub-accordion-body" *ngIf="subAccordion.includes(rIndex) && mainAccordion.includes(i+1) && i == mainAccIndex">
+              <table>
+                <thead>
+                  <tr>
+                    <ng-container *ngFor="let defaultViewColumn of defaultViewColumns">
+                      <th *ngIf="defaultViewColumn.showColumn === true">
+                        <!--<span (click)="sort('id', rIndex)" *ngIf="defaultViewColumn.columnName === 'Id'">
+                          Id <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>-->
+                        <span (click)="sort('category', rIndex)" *ngIf="defaultViewColumn.columnName === 'Category'">
+                          Category <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('subCategory', rIndex)" *ngIf="defaultViewColumn.columnName === 'SubCategory'">
-                        Sub Category <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('subCategory', rIndex)" *ngIf="defaultViewColumn.columnName === 'SubCategory'">
+                          Sub Category <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('edmFieldName', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldName'">
-                        Edm Field Name <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('edmFieldName', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldName'">
+                          Edm Field Name <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('edmFieldComponent', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldComponent'">
-                        Edm Field Component <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('edmFieldComponent', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldComponent'">
+                          Edm Field Component <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('edmFieldExportName', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldExportName'">
-                        Edm Field Export Name <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('edmFieldExportName', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldExportName'">
+                          Edm Field Export Name <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('edmFieldDefinition', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldDefinition'">
-                        Edm Field Definition <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('edmFieldDefinition', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldDefinition'">
+                          Edm Field Definition <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('edmFieldMandatory', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldMandatory'">
-                        Edm Field Mandatory <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span style="max-width:100%" (click)="sort('edmFieldMandatory', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldMandatory'">
+                          Edm Field Mandatory <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('edmFieldNormalization', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldNormalization'">
-                        Edm Field Normalization <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('edmFieldNormalization', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldNormalization'">
+                          Edm Field Normalization <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('edmFieldDerivation', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldDerivation'">
-                        Edm Field Derivation <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('edmFieldDerivation', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldDerivation'">
+                          Edm Field Derivation <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('chatGptOutput', rIndex)" *ngIf="defaultViewColumn.columnName === 'ChatGptOutput'">
-                        Chat Gpt Output <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('edmFieldSpecification', rIndex)" *ngIf="defaultViewColumn.columnName === 'EdmFieldSpecification'">
+                          Edm Field Specification <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('isCustom', rIndex)" *ngIf="defaultViewColumn.columnName === 'IsCustom'">
-                        Is Custom <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <!--<span (click)="sort('chatGptOutput', rIndex)" *ngIf="defaultViewColumn.columnName === 'ChatGptOutput'">
+    Chat Gpt Output <fa-icon [icon]="sortIcon"></fa-icon>
+  </span>-->
 
-                      <span (click)="sort('vendorName', rIndex)" *ngIf="defaultViewColumn.columnName === 'VendorName'">
-                        Vendor Name <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('isCustom', rIndex)" *ngIf="defaultViewColumn.columnName === 'IsCustom'">
+                          Is Custom <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('vendorFieldName', rIndex)" *ngIf="defaultViewColumn.columnName === 'VendorFieldName'">
-                        Vendor Field Name <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('vendorName', rIndex)" *ngIf="defaultViewColumn.columnName === 'VendorName'">
+                          Vendor Name <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('scdFieldName', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdFieldName'">
-                        Scd Field Name <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('vendorFieldName', rIndex)" *ngIf="defaultViewColumn.columnName === 'VendorFieldName'">
+                          Vendor Field Name <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('scdModelName', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdModelName'">
-                        Scd Model Name <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('scdFieldName', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdFieldName'">
+                          Scd Field Name <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('scdFieldDefinition', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdFieldDefinition'">
-                        Scd Field Definition <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('scdModelName', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdModelName'">
+                          Scd Model Name <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('scdFieldMandatory', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdFieldMandatory'">
-                        Scd Field Mandatory <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('scdFieldDefinition', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdFieldDefinition'">
+                          Scd Field Definition <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('scdFieldTranslation', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdFieldTranslation'">
-                        Scd Field Translation <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('scdFieldMandatory', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdFieldMandatory'">
+                          Scd Field Mandatory <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('scdFieldFormula', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdFieldFormula'">
-                        Scd Field Formula <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('scdFieldTranslation', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdFieldTranslation'">
+                          Scd Field Translation <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('scdChatGptOutput', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdChatGptOutput'">
-                        Scd Chat Gpt Output <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
+                        <span (click)="sort('scdFieldFormula', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdFieldFormula'">
+                          Scd Field Formula <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
 
-                      <span (click)="sort('cost', rIndex)" *ngIf="defaultViewColumn.columnName === 'Cost'">
-                        Cost <fa-icon [icon]="sortIcon"></fa-icon>
-                      </span>
-                    </th>
-                  </ng-container>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let listColumn of subTest.subTestDataList" style="width:100%;">
-                  <ng-container *ngFor="let defaultViewColumn of defaultViewColumns">
-                    <td *ngIf="defaultViewColumn.showColumn === true" style="width:stretch">
-                      <span *ngIf="defaultViewColumn.columnName === 'Id'">
-                        {{listColumn.id}}
-                      </span>
-                      <span *ngIf="defaultViewColumn.columnName === 'Category'">{{listColumn.category}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'SubCategory'">{{listColumn.subCategory}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'EdmFieldName'">{{listColumn.edmFieldName}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'EdmFieldComponent'">{{listColumn.edmFieldComponent}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'EdmFieldExportName'">{{listColumn.edmFieldExportName}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'EdmFieldDefinition'">{{listColumn.edmFieldDefinition}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'EdmFieldMandatory'">{{listColumn.edmFieldMandatory}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'EdmFieldNormalization'">{{listColumn.edmFieldNormalization}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'EdmFieldDerivation'">{{listColumn.edmFieldDerivation}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'ChatGptOutput'">{{listColumn.chatGptOutput}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'IsCustom'">{{listColumn.isCustom}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'VendorName'">{{listColumn.vendorName}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'VendorFieldName'">{{listColumn.vendorFieldName}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'ScdFieldName'">{{listColumn.scdFieldName}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'ScdModelName'">{{listColumn.scdModelName}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'ScdFieldDefinition'">{{listColumn.scdFieldDefinition}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'ScdFieldMandatory'">{{listColumn.scdFieldMandatory}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'ScdFieldTranslation'">{{listColumn.scdFieldTranslation}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'ScdFieldFormula'">{{listColumn.scdFieldFormula}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'ScdChatGptOutput'">{{listColumn.scdChatGptOutput}}</span>
-                      <span *ngIf="defaultViewColumn.columnName === 'Cost'">{{listColumn.cost}}</span>
+                        <span (click)="sort('scdFieldSpecification', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdFieldSpecification'">
+                          Scd Field Specification <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
+
+                        <!--<span (click)="sort('scdChatGptOutput', rIndex)" *ngIf="defaultViewColumn.columnName === 'ScdChatGptOutput'">
+    Scd Chat Gpt Output <fa-icon [icon]="sortIcon"></fa-icon>
+  </span>-->
+
+                        <span (click)="sort('cost', rIndex)" *ngIf="defaultViewColumn.columnName === 'Cost'">
+                          Cost <fa-icon [icon]="sortIcon"></fa-icon>
+                        </span>
+                      </th>
+                    </ng-container>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let listColumn of subCluster.gridDataList" style="width:100%;">
+                    <ng-container *ngFor="let defaultViewColumn of defaultViewColumns">
+                      <td *ngIf="defaultViewColumn.showColumn === true" style="width:stretch">
+                        <!--<span *ngIf="defaultViewColumn.columnName === 'Id'">
+                          {{listColumn.id}}-->
+                          <!--<span class="custom-control custom-switch custom-control-inline align-middle">
+
+    <input type="checkbox" class="custom-control-input" [(ngModel)]="listColumn.id" id="select_{{i}}" (change)="showHideColumn(listColumn)">
+    <label class="custom-control-label switch" for="select_{{i}}">
+      <span class="status-inactive" *ngIf="listColumn.id"> Show</span>
+      <span class="status-active" *ngIf="!listColumn.id"> Hide</span>
+    </label>
+  </span>-->
+                        <!--</span>-->
+                        <span *ngIf="defaultViewColumn.columnName === 'Category'">{{listColumn.category}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'SubCategory'">{{listColumn.subCategory}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'EdmFieldName'">{{listColumn.edmFieldName}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'EdmFieldComponent'">{{listColumn.edmFieldComponent}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'EdmFieldExportName'">{{listColumn.edmFieldExportName}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'EdmFieldDefinition'">{{listColumn.edmFieldDefinition}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'EdmFieldMandatory'">{{listColumn.edmFieldMandatory}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'EdmFieldNormalization'" style="cursor:pointer" (click)="openNormalizationRuleModal(templateRule,listColumn.edmFieldNormalizationLength, listColumn.standardFieldId, 'edm_field_normalization', 'Edm Normalization Rule')">...</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'EdmFieldDerivation'" style="cursor:pointer" (click)="openNormalizationRuleModal(templateRule,listColumn.edmFieldDerivationLength, listColumn.standardFieldId, 'edm_field_derivation', 'Edm Derivation Rule')">...</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'EdmFieldSpecification'" style="cursor:pointer" (click)="openNormalizationRuleModal(templateRule,listColumn.edmFieldSpecificationLength, listColumn.standardFieldId, 'edm_field_specification', 'Edm Field Specification')">...</span>
+                        <!--<span *ngIf="defaultViewColumn.columnName === 'ChatGptOutput'">{{listColumn.chatGptOutput}}</span>-->
+                        <span *ngIf="defaultViewColumn.columnName === 'IsCustom'">{{listColumn.isCustom}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'VendorName'">{{listColumn.vendorName}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'VendorFieldName'">{{listColumn.vendorFieldName}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'ScdFieldName'">{{listColumn.scdFieldName}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'ScdModelName'">{{listColumn.scdModelName}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'ScdFieldDefinition'">{{listColumn.scdFieldDefinition}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'ScdFieldMandatory'">{{listColumn.scdFieldMandatory}}</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'ScdFieldTranslation'" style="cursor:pointer" (click)="openNormalizationRuleModal(templateRule,listColumn.edmFieldSpecificationLength, listColumn.standardFieldId, 'scd_field_translation', 'SCD Field Translation')">...</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'ScdFieldFormula'" style="cursor:pointer" (click)="openNormalizationRuleModal(templateRule,listColumn.scdFieldFormulaLength, listColumn.standardFieldId, 'scd_field_formula', 'SCD Field Formula')">...</span>
+                        <span *ngIf="defaultViewColumn.columnName === 'ScdFieldSpecification'" style="cursor:pointer" (click)="openNormalizationRuleModal(templateRule,listColumn.scdFieldSpecificationLength, listColumn.standardFieldId, 'scd_field_specification', 'SCD Field Specification')">...</span>
+                        <!--<span *ngIf="defaultViewColumn.columnName === 'ScdChatGptOutput'">{{listColumn.scdChatGptOutput}}</span>-->
+                        <span *ngIf="defaultViewColumn.columnName === 'Cost'">{{listColumn.cost}}</span>
+                      </td>
+                    </ng-container>
+                    <td>
+                      <button class="plus-button" *ngIf="!newDataList.includes(listColumn.id)" (click)="addData(listColumn)">
+                        <fa-icon [icon]="plusIcon"></fa-icon>
+                      </button>
+                      <button class="plus-button" *ngIf="newDataList.includes(listColumn.id) && newDataList.length > 0" (click)="removeData(listColumn)">
+                        <fa-icon [icon]="minusIcon"></fa-icon>
+                      </button>
                     </td>
-                  </ng-container>
-                  <td>
-                    <button class="plus-button" *ngIf="!newDataList.includes(listColumn.id)" (click)="addData(listColumn)">
-                      <fa-icon [icon]="plusIcon"></fa-icon>
-                    </button>
-                    <button class="plus-button" *ngIf="newDataList.includes(listColumn.id) && newDataList.length > 0" (click)="removeData(listColumn)">
-                      <fa-icon [icon]="minusIcon"></fa-icon>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 <ng-template #template>
   <div class="modal-header">
     <h4 class="modal-title pull-left">All Columns</h4>
-    <!--<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
-    </button>-->
+    </button>
   </div>
   <div class="modal-body">
     <div class="col-12 p-1">
@@ -249,7 +272,7 @@
             <div class="action-data">
               <div class="custom-control custom-switch custom-control-inline align-middle">
                 <!--<input type="checkbox" class="custom-control-input"
-                                         [(ngModel)]="item.showColumn" id="select_{{i}}" (change)="showHideColumn(item)">-->
+                       [(ngModel)]="item.showColumn" id="select_{{i}}" (change)="showHideColumn(item)">-->
                 <input type="checkbox" class="custom-control-input" [(ngModel)]="item.showColumn" id="select_{{i}}" (change)="showHideColumn(item)">
                 <label class="custom-control-label" for="select_{{i}}">
                   <span class="status-inactive" *ngIf="item.showColumn">Show</span>
@@ -263,3 +286,24 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #templateRule>
+  <div class="modal-header text-center header-color">
+    <h4 class="head-titel mb-0">{{headerName}}</h4>
+    <button type="button" class="close-rule pull-right" aria-label="Close" (click)="modalRefNormalization.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <pre><code style="overflow-y: scroll;">{{ rule }}</code>
+    <!--<button type="submit" class="btn btn-copy">Copy</button>-->
+    <button ngxClipboard [cbContent]="getLinesToCopy()" type="submit" class="btn btn-copy">Copy</button>
+    
+    </pre>
+
+ 
+
+  </div>
+</ng-template>
+

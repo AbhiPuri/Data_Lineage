@@ -1,30 +1,27 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { faColumns, faMinus, faPlus, faSearch, faSort } from '@fortawesome/free-solid-svg-icons';
+import { MatDialog } from '@angular/material/dialog';
+import { faColumns, faMinus, faPlus, faRandom, faSearch, faSort } from '@fortawesome/free-solid-svg-icons';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import * as XLSX from 'xlsx';
-import { FilterApiService } from '../../Services/filterapi.services';
 import { DataModel } from '../../Models/data.model';
-
+import { FilterApiService } from '../../Services/filterapi.services';
 @Component({
   selector: 'app-data-heirarchy',
   templateUrl: './data-heirarchy.component.html',
-  styleUrls: ['./data-heirarchy.component.css'],
-  template: `
-    <div *ngIf="data">
-      <h1>Data</h1>
-      <pre>{{ data.nclobData }}</pre>
-    </div>
-  `,
+  styleUrls: ['./data-heirarchy.component.css']
 })
 export class DataHeirarchyComponent implements OnInit {
 
   sortIcon = faSort;
   searchIcon = faSearch;
   columnChooserIcon = faColumns;
+  treeIcon = faRandom;
   plusIcon = faPlus;
   minusIcon = faMinus;
+  showBox: boolean = false;
   filterSearchText: any;
+  headerName: any;
   categoryList: any[] = [];
   selectedCategoryItems: any[] = [];
   subCategoryList: any[] = [];
@@ -36,29 +33,13 @@ export class DataHeirarchyComponent implements OnInit {
   mainAccIndex: any = null;
   subAcc: any[][] = [[]];
   testList: any[] = [];
-  testList1: string[] = [];
-  testList2: DataModel[] = [];
-  //dataModel: DataModel[] = [{
-  //  assetClassName: "abc",
-  //  edmFieldName: "abc",
-  //  edmFieldExportName: "abc",
-  //  edmFieldDefinition: "abc",
-  //  edmFieldMandatory: "abc",
-  //  edmFieldNormalization: "abc",
-  //  edmFieldDerivation: "abc",
-  //  chatGptOutput: "abc",
-  //  isCustom: "abc",
-  //  vendorName: "abc",
-  //  vendorFieldName: "abc",
-  //}];
-
   newDataList: any[] = [];
   previousCategoryList: any[] = [];
   previousSubCategoryList: any[] = [];
   sortProperty: string = 'id';
   sortOrder = 1;
   defaultViewColumns = [
-    { columnName: "Id", isRequired: true, showColumn: true },
+   /* { columnName: "Id", isRequired: true, showColumn: true },*/
     { columnName: "Category", isRequired: true, showColumn: true },
     { columnName: "SubCategory", isRequired: true, showColumn: true },
     { columnName: "EdmFieldName", isRequired: true, showColumn: true },
@@ -66,8 +47,12 @@ export class DataHeirarchyComponent implements OnInit {
     { columnName: "EdmFieldExportName", isRequired: false, showColumn: false },
     { columnName: "EdmFieldDefinition", isRequired: false, showColumn: false },
     { columnName: "EdmFieldMandatory", isRequired: true, showColumn: true },
-    { columnName: "EdmFieldNormalization", isRequired: false, showColumn: false },
+    { columnName: "EdmFieldNormalization", isRequired: true, showColumn: true },
     { columnName: "EdmFieldDerivation", isRequired: false, showColumn: false },
+    { columnName: "EdmFieldSpecification", isRequired: false, showColumn: false },
+    { columnName: "ScdFieldTranslation", isRequired: false, showColumn: false },
+    { columnName: "ScdFieldFormula", isRequired: false, showColumn: false },
+    { columnName: "ScdFieldSpecification", isRequired: false, showColumn: false },
     { columnName: "ChatGptOutput", isRequired: false, showColumn: false },
     { columnName: "IsCustom", isRequired: false, showColumn: false },
     { columnName: "VendorName", isRequired: true, showColumn: true },
@@ -76,18 +61,83 @@ export class DataHeirarchyComponent implements OnInit {
     { columnName: "ScdModelName", isRequired: true, showColumn: true },
     { columnName: "ScdFieldDefinition", isRequired: false, showColumn: false },
     { columnName: "ScdFieldMandatory", isRequired: true, showColumn: true },
-    { columnName: "ScdFieldTranslation", isRequired: false, showColumn: false },
-    { columnName: "ScdFieldFormula", isRequired: false, showColumn: false },
     { columnName: "ScdChatGptOutput", isRequired: false, showColumn: false },
     { columnName: "Cost", isRequired: true, showColumn: true },
 
   ];
   modalRef: BsModalRef | any;
+  modalRefNormalization: BsModalRef | any;
+  modalRef2: BsModalRef | any;
   selecttabbox: any = 1;
+  codeLines =
+    ` if (!string.IsNullOrEmpty(Source.DescriptiveInfo.COUNTRY) && Source.DescriptiveInfo.COUNTRY == "SNAT")
+   
+            return Lookups.Countries.GetItemById("SNAT");
+
+       else if (Source.DescriptiveInfo.COUNTRY == "MULT")
+
+            return Lookups.Countries.GetItemById("MULT");
+
+       if (!string.IsNullOrEmpty(Source.DescriptiveInfo.CNTRY_ISSUE_ISO))
+
+            return Lookups.Countries.GetItemById(Source.DescriptiveInfo.CNTRY_ISSUE_ISO);
+
+       if (!string.IsNullOrEmpty(Source.DescriptiveInfo.CNTRY_OF_INCORPORATION))
+
+            return Lookups.Countries.GetItemById(Source.DescriptiveInfo.CNTRY_OF_INCORPORATION);
+
+       var country = Mappings.NORM_BL_CountryToISOCode.Transform(Source.DescriptiveInfo.COUNTRY, Source.DescriptiveInfo.MARKET_SECTOR_DES);
+
+       if (country != null && country.CountryISO != null)
+            return Lookups.Countries.GetItemById(country.CountryISO);
+
+       return null;
+ if (!string.IsNullOrEmpty(Source.DescriptiveInfo.COUNTRY) && Source.DescriptiveInfo.COUNTRY == "SNAT")
+
+            return Lookups.Countries.GetItemById("SNAT");
+
+       else if (Source.DescriptiveInfo.COUNTRY == "MULT")
+
+            return Lookups.Countries.GetItemById("MULT");
+
+       if (!string.IsNullOrEmpty(Source.DescriptiveInfo.CNTRY_ISSUE_ISO))
+
+            return Lookups.Countries.GetItemById(Source.DescriptiveInfo.CNTRY_ISSUE_ISO);
+
+       if (!string.IsNullOrEmpty(Source.DescriptiveInfo.CNTRY_OF_INCORPORATION))
+
+            return Lookups.Countries.GetItemById(Source.DescriptiveInfo.CNTRY_OF_INCORPORATION);
+
+       var country = Mappings.NORM_BL_CountryToISOCode.Transform(Source.DescriptiveInfo.COUNTRY, Source.DescriptiveInfo.MARKET_SECTOR_DES);
+
+       if (country != null && country.CountryISO != null)
+            return Lookups.Countries.GetItemById(country.CountryISO);
+
+       return null;
+ `;
+  codeLines2 =
+    `if (Source.Warrants != null && !String.IsNullOrEmpty(Source.Warrants.ISSUER_CMPID))
+	        return SecMaster_Institution.GetByBloombergSilverInstitutionKey("Bloomberg", Source.Warrants.ISSUER_CMPID);
+
+      if (Source.SecurityIdentifiers.ID_BB_COMPANY.HasValue)
+	        return SecMaster_Institution.GetByBloombergSilverInstitutionKey("Bloomberg", Source.SecurityIdentifiers.ID_BB_COMPANY.Value.ToString());
+
+      return null;
+ `;
+  codeLines3 =
+    `return Lookups.BBGSpecificCouponTypes.GetItemById(Source.DescriptiveInfo.CPN_TYP_SPECIFIC);
+ `;
+  rule: any;
+  rowData: any;
+  dataArray: any[] = [];
+  modelData: any[] = [];
 
 
-
-  constructor(private modalService: BsModalService, private filterapiService: FilterApiService) {
+  constructor(
+    private modalService: BsModalService,
+    private filterapiService: FilterApiService,
+    private dialog: MatDialog
+  ) {
 
   }
 
@@ -105,19 +155,19 @@ export class DataHeirarchyComponent implements OnInit {
                 id: 1,
                 category: ['Static'],
                 subCategory: 'Characteristics',
-                edmFieldName: 'Long Security Name 1',
+                edmFieldName: 'SecurityName',
                 edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'Long Security Name 1',
-                edmFieldDefinition: 'Long Security Name 1',
-                edmFieldMandatory: 'Optional',
-                edmFieldNormalization: ' ',
+                edmFieldExportName: 'SecurityName',
+                edmFieldDefinition: 'SecurityName',
+                edmFieldMandatory: 'Mandatory',
+                edmFieldNormalization: this.codeLines,
                 edmFieldDerivation: ' ',
                 chatGptOutput: ' ',
                 isCustom: 'N',
                 vendorName: 'Open Source',
-                vendorFieldName: 'Long Security Name 1',
-                scdFieldName: 'Long Security Name 1',
-                scdModelName: 'Equity',
+                vendorFieldName: 'SecurityName',
+                scdFieldName: 'SecurityName',
+                scdModelName: 'Equities',
                 scdFieldDefinition: 'The long name of the security.',
                 scdFieldMandatory: 'Optional',
                 scdFieldTranslation: 'N/A',
@@ -128,22 +178,22 @@ export class DataHeirarchyComponent implements OnInit {
               {
                 id: 2,
                 category: ['Static', 'Identifiers'],
-                subCategory: 'Instrument Identifier',
-                edmFieldName: 'ISIN',
+                subCategory: 'Characteristics',
+                edmFieldName: 'SecurityName',
                 edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'ISIN',
-                edmFieldDefinition: 'ISIN',
-                edmFieldMandatory: 'Required',
-                edmFieldNormalization: ' ',
+                edmFieldExportName: 'SecurityName',
+                edmFieldDefinition: 'SecurityName',
+                edmFieldMandatory: 'Optional',
+                edmFieldNormalization: this.codeLines2,
                 edmFieldDerivation: ' ',
                 chatGptOutput: ' ',
                 isCustom: 'N',
                 vendorName: 'Open Source',
-                vendorFieldName: 'ID_ISIN',
-                scdFieldName: 'ISIN',
-                scdModelName: 'Equity',
-                scdFieldDefinition: 'The ISIN of the security.',
-                scdFieldMandatory: 'Required',
+                vendorFieldName: 'SecurityName',
+                scdFieldName: 'SecurityName',
+                scdModelName: 'Equities',
+                scdFieldDefinition: 'The long name of the security.',
+                scdFieldMandatory: 'Optional',
                 scdFieldTranslation: 'N/A',
                 scdFieldFormula: 'N/A',
                 scdChatGptOutput: 'None',
@@ -160,19 +210,19 @@ export class DataHeirarchyComponent implements OnInit {
                 id: 3,
                 category: ['Static'],
                 subCategory: 'Characteristics',
-                edmFieldName: 'Long Security Name 1',
+                edmFieldName: 'SecurityName',
                 edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'Long Security Name 1',
-                edmFieldDefinition: 'Long Security Name 1',
-                edmFieldMandatory: 'Optional',
-                edmFieldNormalization: ' ',
+                edmFieldExportName: 'SecurityName',
+                edmFieldDefinition: 'SecurityName',
+                edmFieldMandatory: 'Mandatory',
+                edmFieldNormalization: this.codeLines3,
                 edmFieldDerivation: ' ',
                 chatGptOutput: ' ',
                 isCustom: 'N',
                 vendorName: 'Open Source',
-                vendorFieldName: 'Long Security Name 1',
-                scdFieldName: 'Long Security Name 1',
-                scdModelName: 'Bond',
+                vendorFieldName: 'SecurityName',
+                scdFieldName: 'SecurityName',
+                scdModelName: 'Equities',
                 scdFieldDefinition: 'The long name of the security.',
                 scdFieldMandatory: 'Optional',
                 scdFieldTranslation: 'N/A',
@@ -182,27 +232,27 @@ export class DataHeirarchyComponent implements OnInit {
               },
               {
                 id: 4,
-                category: ['Static', 'Identifiers'],
-                subCategory: 'Instrument Identifier',
-                edmFieldName: 'ISIN',
+                category: ['Static'],
+                subCategory: 'Characteristics',
+                edmFieldName: 'SecurityName',
                 edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'ISIN',
-                edmFieldDefinition: 'ISIN',
-                edmFieldMandatory: 'Required',
+                edmFieldExportName: 'SecurityName',
+                edmFieldDefinition: 'SecurityName',
+                edmFieldMandatory: 'Mandatory',
                 edmFieldNormalization: ' ',
                 edmFieldDerivation: ' ',
                 chatGptOutput: ' ',
                 isCustom: 'N',
                 vendorName: 'Open Source',
-                vendorFieldName: 'ID_ISIN',
-                scdFieldName: 'ISIN',
-                scdModelName: 'Equity',
-                scdFieldDefinition: 'The ISIN of the security.',
-                scdFieldMandatory: 'Required',
+                vendorFieldName: 'SecurityName',
+                scdFieldName: 'SecurityName',
+                scdModelName: 'Equities',
+                scdFieldDefinition: 'The long name of the security.',
+                scdFieldMandatory: 'Optional',
                 scdFieldTranslation: 'N/A',
                 scdFieldFormula: 'N/A',
                 scdChatGptOutput: 'None',
-                cost: '$4',
+                cost: '$1',
               },
             ]
           },
@@ -372,61 +422,9 @@ export class DataHeirarchyComponent implements OnInit {
       },
     ];
   }
-
-  getGridData() {
-    
-    const selClient = "Standard";
-
-    //var sqlQueryGetGridData = `Select DSF.edm_field_normalization From DMS_Standard_Fields DSF`;
-    var sqlQueryGetGridData = `Select DCNT.ClientName, DCL.ClusterName, DSCL.Sub_ClusterName, DSF.CategoryName, DSF.Sub_CategoryName, DSF.Edm_Field_Name, DSF.Edm_Field_Component, DSF.Edm_Field_Export_Name, DSF.edm_field_definition, DSF.edm_field_mandatory, DSF.iscustom, DSF.vendorname, DSF.vendor_field_name, DSF.scd_field_name, DSF.scd_model_name, DSF.scd_field_definition, DSF.scd_field_mandatory, DSF.scd_field_translation, DSF.scd_field_formula, DSF.SCD_FIELD_SPECIFICATION, DSF.cost From DMS_Standard_Fields DSF Join DMS_Client DCNT ON DCNT.ClientID = DSF.ClientID Join DMS_Cluster DCL ON DCL.ClusterID = DSF.ClusterID Join DMS_Sub_Cluster DSCL ON dscl.sub_clusterid = DSF.sub_clusterid Where DCNT.ClientName = '${selClient}'`;
-    //var sqlQueryGetGridData = `Select DCNT.ClientName, DCL.ClusterName, DSCL.Sub_ClusterName, DSF.CategoryName, DSF.Sub_CategoryName, DSF.Edm_Field_Name, DSF.Edm_Field_Component, DSF.Edm_Field_Export_Name, DSF.edm_field_definition, DSF.edm_field_mandatory, DSF.edm_field_normalization, DSF.edm_field_derivation, DSF.EDM_FIELD_SPECIFICATION, DSF.iscustom, DSF.vendorname, DSF.vendor_field_name, DSF.scd_field_name, DSF.scd_model_name, DSF.scd_field_definition, DSF.scd_field_mandatory, DSF.scd_field_translation, DSF.scd_field_formula, DSF.SCD_FIELD_SPECIFICATION, DSF.cost From DMS_Standard_Fields DSF Join DMS_Client DCNT ON DCNT.ClientID = DSF.ClientID Join DMS_Cluster DCL ON DCL.ClusterID = DSF.ClusterID Join DMS_Sub_Cluster DSCL ON dscl.sub_clusterid = DSF.sub_clusterid Where DCNT.ClientName = '${selClient}'`;
-
-    this.GetDBData(sqlQueryGetGridData);
-    //this.GetDBData(sqlQueryGetGridData).then((categoryData) => {
-    //  this.categories = categoryData.map(([label]: string) => ({ label, checked: false }))
-    //});
-  }
-  data: any;
-  parsedData: any;
-  async GetDBData(sqlQuery: string): Promise<any> {
-    try {
-      const response = await this.filterapiService.getData(sqlQuery).toPromise();
-      this.testList2 = response;
-      return this.testList2;
-    }
-    catch (error) {
-      console.error('Error:', error);
-      throw error;
-    }
-
-    //this.filterapiService.getData(sqlQuery).subscribe(
-    //  (response) => {
-    //    this.data = response;
-    //    //this.parseData();
-    //  },
-    //  (error) => {
-    //    console.error('Error fetching data:', error);
-    //  }
-    //);
-  }
-
-  parseData() {
-    // Assuming your NCLOB data is stored in a field named 'nclobField'
-    if (this.data && this.data.nclobField) {
-      // Example: Parsing NCLOB data to extract necessary information
-      try {
-        this.parsedData = JSON.parse(this.data.nclobField);
-      } catch (error) {
-        console.error('Error parsing NCLOB data:', error);
-      }
-    }
-  }
-
   ngOnInit() {
     this.getData();
-    this.getGridData();
-    this.getCategoryList();
-    this.getSubCategoryList();
+    this.getApiData();
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -439,12 +437,186 @@ export class DataHeirarchyComponent implements OnInit {
 
   }
 
+  getApiData() {
+    let sqlQueryGetGridData: any;
+    sqlQueryGetGridData =
+      `Select DSF.STANDARD_FIELD_ID, DCNT.Client_Name, DCL.Cluster_Id, DCL.Cluster_Name, DSCL.Sub_Cluster_Id, DSCL.Sub_Cluster_Name, DEV.Category_Name, DEV.Sub_Category_Name, DEV.Edm_Field_Name, DEV.Edm_Field_Component,
+         DEV.Edm_Field_Export_Name, DEV.edm_field_definition, DEV.edm_field_mandatory, DEV.iscustom, DVM.vendor_name, DVF.vendor_field_name, DSV.scd_field_name,
+         dbms_lob.getlength(DEV.edm_field_normalization) AS normalization_length, dbms_lob.getlength(DEV.edm_field_derivation) AS derivation_length,
+         dbms_lob.getlength(DEV.edm_field_specification) AS specification_length, dbms_lob.getlength(DSV.scd_field_translation) AS translation_length,
+         dbms_lob.getlength(DSV.scd_field_formula) AS formula_length, dbms_lob.getlength(DSV.scd_field_specification) AS scd_specification_length,
+         DSV.scd_model_name, DSV.scd_field_definition, DSV.scd_field_mandatory, DSF.cost From DMS_Standard_Fields DSF JOIN DMS_Client DCNT ON DCNT.Client_ID = DSF.Client_ID
+         JOIN DMS_Cluster DCL ON DCL.Cluster_ID = DSF.Cluster_ID JOIN DMS_Sub_Cluster DSCL ON DSCL.Cluster_ID = DCL.Cluster_ID JOIN DMS_EDM_VENDOR DEV ON DEV.EDM_FIELD_ID = DSF.EDM_FIELD_ID
+         JOIN DMS_VENDOR DVM ON DVM.VENDOR_ID = DSF.VENDOR_ID JOIN DMS_VENDOR_FIELDS DVF ON DVF.VENDOR_FIELD_ID = DSF.VENDOR_FIELD_ID LEFT OUTER JOIN DMS_SCD_VENDOR DSV ON
+         DSV.SCD_FIELD_ID = DSF.SCD_FIELD_ID WHERE DCNT.Client_Name = 'STANDARD' AND DCL.Cluster_Name = 'INSTRUMENT' AND DSCL.SUB_Cluster_Name = 'EQUITY'`;
+
+    //this.GetFilterData(sqlQueryGetGridData, true, null).then(async (x) => {
+    //  this.rowData = x;
+    //  const normalizationPromises: Promise <any> [] =[];
+    //  this.dataArray.forEach((y: any, i: any) => {
+    //    const normalizationPromise = this.getNormalizationRule(y, i);
+    //    normalizationPromises.push(normalizationPromise);
+    //  });
+    //  await Promise.all(normalizationPromises);
+    //});
+    //this.getList();
+
+    this.GetFilterData(sqlQueryGetGridData, true, '').then((x) => {
+      this.rowData = x;
+      this.getList();
+      console.log(this.modelData)
+      this.getCategoryList();
+      this.getSubCategoryList();
+      //const normalizationPromises: Promise<any>[] = [];
+      //this.dataArray.forEach((y: any, i: any) => {
+      //  const normalizationPromise = this.getNormalizationRule(y, i);
+      //  normalizationPromises.push(normalizationPromise);
+      // });
+
+      //Promise.all(normalizationPromises).then(y => {
+      //  console.log(this.dataArray)
+      //  if (this.dataArray.length > 0)
+      //    this.getList();
+      //});
+    });
+
+
+  }
+
+  getList() {
+    let clustersSet = new Set(this.dataArray.map(x => x.CLUSTER_NAME));
+    let distinctClusters = Array.from(clustersSet);
+
+    let subClustersSet = new Set(this.dataArray.map(x => x.SUB_CLUSTER_NAME));
+    let distinctSubClusters = Array.from(subClustersSet);
+    // setTimeout(() => {
+    distinctClusters.forEach(x => {
+      let subClusterList: any[] = [];
+      let clusterModel = {
+        clusterId: 0,
+        name: x,
+        subClusterDataList: subClusterList
+      };
+      distinctSubClusters.forEach(y => {
+        let dataList: any[] = [];
+        let subClusterModel = {
+          subClusterId: 0,
+          name: y,
+          gridDataList: dataList
+        };
+        this.dataArray.forEach(z => {
+
+          if (x == z.CLUSTER_NAME && y == z.SUB_CLUSTER_NAME) {
+            let dataModel: DataModel = {
+              id: z.STANDARD_FIELD_ID,
+              category: z.CATEGORY_NAME,
+              subCategory: z.SUB_CATEGORY_NAME,
+              edmFieldName: z.EDM_FIELD_NAME,
+              edmFieldComponent: z.EDM_FIELD_COMPONENT,
+              edmFieldExportName: z.EDM_FIELD_EXPORT_NAME,
+              edmFieldDefinition: z.EDM_FIELD_DEFINITION,
+              edmFieldMandatory: z.EDM_FIELD_MANDATORY,
+              edmFieldNormalizationLength: z.NORMALIZATION_LENGTH,
+              edmFieldDerivationLength: z.DERIVATION_LENGTH,
+              edmFieldSpecificationLength: z.SPECIFICATION_LENGTH,
+              scdFieldTranslationLength: z.TRANSLATION_LENGTH,
+              scdFieldFormulaLength: z.FORMULA_LENGTH,
+              scdFieldSpecificationLength: z.SCD_SPECIFICATION_LENGTH,
+              isCustom: z.ISCUSTOM,
+              vendorName: z.VENDOR_NAME,
+              vendorFieldName: z.VENDOR_FIELD_NAME,
+              scdFieldName: z.SCD_FIELD_NAME,
+              scdModelName: z.SCD_MODEL_NAME,
+              scdFieldDefinition: z.SCD_FIELD_DEFINITION,
+              scdFieldMandatory: z.SCD_FIELD_MANDATORY,
+              cost: z.COST,
+            }
+            subClusterModel.gridDataList.push(dataModel);
+            subClusterModel.subClusterId = z.SUB_CLUSTER_ID;
+            clusterModel.clusterId = z.CLUSTER_ID;
+
+          }
+
+        });
+        if (subClusterModel.gridDataList.length > 0)
+          clusterModel.subClusterDataList.push(subClusterModel);
+
+
+      });
+      this.modelData.push(clusterModel);
+    });
+    //  }, 500);
+  }
+
+  getNormalizationRule(fieldLength: number, standardId: any, columnName: any) {
+    if (fieldLength <= 2000) {
+      let sqlQueryGetGridData: any;
+      if (columnName == 'edm_field_normalization' || columnName == 'edm_field_derivation' || columnName == 'edm_field_specification') {
+        sqlQueryGetGridData = `Select DBMS_LOB.SUBSTR(DEV.${columnName}, ${fieldLength}) AS normalization_rule From DMS_EDM_VENDOR DEV
+                             join DMS_Standard_Fields DSF ON DEV.EDM_FIELD_ID = DSF.EDM_FIELD_ID WHERE DSF.STANDARD_FIELD_ID = ${standardId}`
+      }
+      if (columnName == 'scd_field_translation' || columnName == 'scd_field_formula' || columnName == 'scd_field_specification') {
+        sqlQueryGetGridData = `Select DBMS_LOB.SUBSTR(DSV.${columnName}, ${fieldLength}) AS normalization_rule From DMS_SCD_VENDOR DSV
+                             join DMS_Standard_Fields DSF ON DSV.SCD_FIELD_ID = DSF.SCD_FIELD_ID WHERE DSF.STANDARD_FIELD_ID = ${standardId}`
+      }
+      this.GetFilterData(sqlQueryGetGridData, false, '').then((x) => {
+        this.rule = x.rows[0][0];
+        console.log(this.rule)
+      });
+    }
+    else {
+      let result = Math.trunc(fieldLength / 2000);
+      var remainder = fieldLength % 2000;
+      let completeNormalizationRule = "";
+      let startingIndex = 1;
+
+      for (let i = 1; i <= result; i++) {
+        let sqlQueryGetGridData: any;
+        if (columnName == 'edm_field_normalization' || columnName == 'edm_field_derivation' || columnName == 'edm_field_specification') {
+          sqlQueryGetGridData = `Select DBMS_LOB.SUBSTR(DEV.${columnName}, 2000, ${startingIndex}) AS normalization_rule From DMS_EDM_VENDOR DEV
+                               join DMS_Standard_Fields DSF ON DEV.EDM_FIELD_ID = DSF.EDM_FIELD_ID WHERE DSF.STANDARD_FIELD_ID = ${standardId}`
+        }
+        if (columnName == 'scd_field_translation' || columnName == 'scd_field_formula' || columnName == 'scd_field_specification') {
+          sqlQueryGetGridData = `Select DBMS_LOB.SUBSTR(DSV.${columnName}, 2000, ${startingIndex}) AS normalization_rule From DMS_SCD_VENDOR DSV
+                             join DMS_Standard_Fields DSF ON DSV.SCD_FIELD_ID = DSF.SCD_FIELD_ID WHERE DSF.STANDARD_FIELD_ID = ${standardId}`
+        }
+        this.GetFilterData(sqlQueryGetGridData, false, '').then((x) => {
+          completeNormalizationRule = completeNormalizationRule.concat(x.rows[0][0]);
+        });
+        startingIndex = startingIndex + 2000;
+      }
+      setTimeout(() => {
+        if (remainder > 0) {
+          let sqlQueryGetGridData: any;
+          if (columnName == 'edm_field_normalization' || columnName == 'edm_field_derivation' || columnName == 'edm_field_specification') {
+            sqlQueryGetGridData = `Select DBMS_LOB.SUBSTR(DEV.${columnName}, ${remainder}, ${startingIndex}) AS normalization_rule From DMS_EDM_VENDOR DEV
+                                 join DMS_Standard_Fields DSF ON DEV.EDM_FIELD_ID = DSF.EDM_FIELD_ID WHERE DSF.STANDARD_FIELD_ID = ${standardId}`
+          }
+          if (columnName == 'scd_field_translation' || columnName == 'scd_field_formula' || columnName == 'scd_field_specification') {
+            sqlQueryGetGridData = `Select DBMS_LOB.SUBSTR(DSV.${columnName}, ${remainder}, ${startingIndex}) AS normalization_rule From DMS_SCD_VENDOR DSV
+                             join DMS_Standard_Fields DSF ON DSV.SCD_FIELD_ID = DSF.SCD_FIELD_ID WHERE DSF.STANDARD_FIELD_ID = ${standardId}`
+          }
+          this.GetFilterData(sqlQueryGetGridData, false, '').then((x) => {
+            completeNormalizationRule = completeNormalizationRule.concat(x.rows[0][0]);
+            this.rule = completeNormalizationRule;
+            console.log(this.rule)
+            // this.dataArray[index].NORMALIZATION_RULE = this.normalizationRuleData;
+
+          });
+        }
+
+      }, 500);
+    }
+
+  }
+
   getCategoryList() {
-    this.testList.forEach((e: any) => {
-      e.subTestList.forEach((x: any) => {
-        if (x.subTestDataList != undefined) {
-          x.subTestDataList.forEach((y: any) => {
-            y.category.forEach((c: any) => {
+    this.modelData.forEach((e: any) => {
+      e.subClusterDataList.forEach((x: any) => {
+        if (x.gridDataList != undefined) {
+          x.gridDataList.forEach((y: any) => {
+            let categoryArray: string[] = y.category.split(', ');
+            categoryArray.forEach((c: any) => {
               if (!this.categoryList.includes(c))
                 this.categoryList.push(c);
             });
@@ -455,17 +627,50 @@ export class DataHeirarchyComponent implements OnInit {
   }
 
   getSubCategoryList() {
-    this.testList.forEach((e: any) => {
-      e.subTestList.forEach((x: any) => {
-        if (x.subTestDataList != undefined) {
-          x.subTestDataList.forEach((y: any) => {
-            if (!this.subCategoryList.includes(y.subCategory))
-              this.subCategoryList.push(y.subCategory);
+    this.modelData.forEach((e: any) => {
+      e.subClusterDataList.forEach((x: any) => {
+        if (x.gridDataList != undefined) {
+          x.gridDataList.forEach((y: any) => {
+            let subCategoryArray: string[] = y.subCategory.split(', ');
+            subCategoryArray.forEach((c: any) => {
+              if (!this.subCategoryList.includes(c))
+                this.subCategoryList.push(c);
+            });
           });
         }
       });
     });
   }
+
+
+  //accordionMain(item: any) {
+  //  console.log(this.mainAccordion)
+  //  console.log(this.subAccordion)
+  // // console.log(item);
+
+  //  if (this.mainAccordion.includes(item)) {
+  //    this.mainAccordion = this.mainAccordion.filter(i => i !== item);
+  //  } else {
+  //    this.mainAccordion.push(item);
+  //  }
+  //}
+
+  //accordionSub(mainAcc: any, item: any) {
+  //  console.log(this.mainAccordion)
+  //  console.log(this.subAccordion)
+  //  this.mainAccIndex = mainAcc;
+
+  //  if (!this.subAccordion.includes(item)) {
+  //    this.subAccordion.push(item);
+  //  }
+  //  else if (this.subAccordion.includes(item) && this.activeAccordion.includes(mainAcc + 1)) {
+  //    this.subAccordion = this.subAccordion.filter((i: any) => i !== item);
+  //  }
+  //  if (!this.activeAccordion.includes(mainAcc + 1)) {
+  //    this.activeAccordion.push(mainAcc + 1);
+  //  }
+  //}
+
 
   accordionMain(item: any) {
     if (this.mainAccordion.includes(item)) {
@@ -478,8 +683,6 @@ export class DataHeirarchyComponent implements OnInit {
   }
 
   accordionSub(mainAcc: any, item: any) {
-    console.log(this.mainAccordion)
-    console.log(this.subAccordion)
     this.mainAccIndex = mainAcc;
 
     if (!this.subAccordion.includes(item)) {
@@ -497,137 +700,167 @@ export class DataHeirarchyComponent implements OnInit {
   search() {
     console.log(this.filterSearchText)
     this.filterSearchText = this.filterSearchText.toLowerCase();
+    console.log(this.modelData)
+    let newCategoryList = this.modelData;
+    this.modelData = [];
+    if (this.filterSearchText == "") {
+      this.getApiData();
+      return;
+    }
 
-    this.getData();
-    let newCategoryList = this.testList;
-    this.testList = [];
     newCategoryList.forEach((e: any) => {
       let subHeaderArr: any[] = [];
       let test: any[] = [];
       let subModel = {
-        id: null,
+        subClusterId: null,
         name: null,
-        subTestDataList: test
+        gridDataList: test
       };
-      e.subTestList.forEach((x: any) => {
+      e.subClusterDataList.forEach((x: any) => {
         let dataArr: any[] = [];
-        if (x.subTestDataList != undefined) {
-          x.subTestDataList.forEach((y: any) => {
-            let lowerCasedCategory = y.category.map((x: any) => x.toLowerCase());
-            if (y.id.toString().includes(this.filterSearchText) || lowerCasedCategory.includes(this.filterSearchText) || y.subCategory.toLowerCase().includes(this.filterSearchText) ||
-              y.edmFieldName.toLowerCase().includes(this.filterSearchText) || y.edmFieldComponent.toLowerCase().includes(this.filterSearchText) || y.edmFieldExportName.toLowerCase().includes(this.filterSearchText) ||
-              y.edmFieldDefinition.toLowerCase().includes(this.filterSearchText) || y.edmFieldMandatory.toLowerCase().includes(this.filterSearchText) ||
-              y.edmFieldNormalization.toLowerCase().includes(this.filterSearchText) || y.edmFieldDerivation.toLowerCase().includes(this.filterSearchText) || y.chatGptOutput.toLowerCase().includes(this.filterSearchText) ||
-              y.isCustom.toLowerCase().includes(this.filterSearchText) || y.vendorName.toLowerCase().includes(this.filterSearchText) || y.vendorFieldName.toLowerCase().includes(this.filterSearchText) ||
-              y.scdFieldName.toLowerCase().includes(this.filterSearchText) || y.scdModelName.toLowerCase().includes(this.filterSearchText) || y.scdFieldDefinition.toLowerCase().includes(this.filterSearchText) ||
-              y.scdFieldMandatory.toLowerCase().includes(this.filterSearchText) || y.scdFieldTranslation.toLowerCase().includes(this.filterSearchText) || y.scdFieldFormula.toLowerCase().includes(this.filterSearchText) ||
-              y.scdChatGptOutput.toLowerCase().includes(this.filterSearchText) || y.cost.toLowerCase().includes(this.filterSearchText))
+        if (x.gridDataList != undefined) {
+          x.gridDataList.forEach((y: any) => {
+            console.log(y.category)
+            let idFilter = y.id.toString() != null ? y.id.toString().includes(this.filterSearchText) : false;
+            let categoryFilter = y.category != null ? y.category.toLowerCase().includes(this.filterSearchText) : false;
+            let subCategoryFilter = y.subCategory != null ? y.subCategory.toLowerCase().includes(this.filterSearchText) : false;
+            let edmFieldNameFilter = y.edmFieldName != null ? y.edmFieldName.toLowerCase().includes(this.filterSearchText) : false;
+            let edmFieldComponentFilter = y.edmFieldComponent != null ? y.edmFieldComponent.toLowerCase().includes(this.filterSearchText) : false;
+            let edmFieldExportNameFilter = y.edmFieldExportName != null ? y.edmFieldExportName.toLowerCase().includes(this.filterSearchText) : false;
+            let edmFieldDefinitionFilter = y.edmFieldDefinition != null ? y.edmFieldDefinition.toLowerCase().includes(this.filterSearchText) : false;
+            let edmFieldMandatoryFilter = y.edmFieldMandatory != null ? y.edmFieldMandatory.toLowerCase().includes(this.filterSearchText) : false;
+            let isCustomFilter = y.isCustom != null ? y.isCustom.toLowerCase().includes(this.filterSearchText) : false;
+            let vendorNameFilter = y.vendorName != null ? y.vendorName.toLowerCase().includes(this.filterSearchText) : false;
+            let vendorFieldNameFilter = y.vendorFieldName != null ? y.vendorFieldName.toLowerCase().includes(this.filterSearchText) : false;
+            let scdFieldNameFilter = y.scdFieldName != null ? y.scdFieldName.toLowerCase().includes(this.filterSearchText) : false;
+            let scdModelNameFilter = y.scdModelName != null ? y.scdModelName.toLowerCase().includes(this.filterSearchText) : false;
+            let scdFieldDefinitionFilter = y.scdFieldDefinition != null ? y.scdFieldDefinition.toLowerCase().includes(this.filterSearchText) : false;
+            let scdFieldMandatoryFilter = y.scdFieldMandatory != null ? y.scdFieldMandatory.toLowerCase().includes(this.filterSearchText) : false;
+            let costFilter = y.cost.toString() != null ? y.cost.toString().includes(this.filterSearchText) : false;
+
+
+            if (idFilter == true || categoryFilter == true || subCategoryFilter == true || edmFieldNameFilter == true ||
+              edmFieldComponentFilter == true || edmFieldExportNameFilter == true || edmFieldDefinitionFilter == true ||
+              edmFieldMandatoryFilter == true || isCustomFilter == true || vendorNameFilter == true || vendorFieldNameFilter == true ||
+              scdFieldNameFilter == true || scdModelNameFilter == true || scdFieldDefinitionFilter == true ||
+              scdFieldMandatoryFilter == true || costFilter == true) {
               dataArr.push(y);
+            }
+
           });
         }
         if (dataArr.length > 0) {
           subModel = {
-            id: x.id,
+            subClusterId: x.subClusterId,
             name: x.name,
-            subTestDataList: dataArr
+            gridDataList: dataArr
           };
           if (dataArr.length > 0)
             subHeaderArr.push(subModel);
         }
       });
       let model = {
-        id: e.id,
+        clusterId: e.clusterId,
         name: e.name,
-        subTestList: subHeaderArr
+        subClusterDataList: subHeaderArr
       }
       if (subHeaderArr.length > 0)
-        this.testList.push(model);
+        this.modelData.push(model);
+
     });
+    console.log(this.modelData)
   }
 
   onItemChange(item: any, isSelectedAll: boolean) {
     console.log(item);
     console.log(this.selectedCategoryItems);
-    this.getData();
+
     this.previousCategoryList = [];
-    let newCategoryList = this.previousSubCategoryList.length > 0 ? this.previousSubCategoryList : this.testList;
-    if (this.selectedCategoryItems.length > 0) {
-      this.testList = [];
-      newCategoryList.forEach((e: any) => {
-        // let headerArr = [];
-        let subHeaderArr: any[] = [];
-        let test: any[] = [];
-        let subModel = {
-          id: null,
-          name: null,
-          subTestDataList: test
-        };
-        e.subTestList.forEach((x: any) => {
-          let dataArr: any[] = [];
-          if (x.subTestDataList != undefined) {
-            x.subTestDataList.forEach((y: any) => {
-              // console.log(y.category)
-              if ((y.category.some((r: any) => this.selectedCategoryItems.includes(r)) && isSelectedAll == false) || (y.category.some((r: any) => item.includes(r)) && isSelectedAll == true))
-                dataArr.push(y);
-            });
-          }
-          if (dataArr.length > 0) {
-            subModel = {
-              id: x.id,
-              name: x.name,
-              subTestDataList: dataArr
-            };
-            if (dataArr.length > 0)
-              subHeaderArr.push(subModel)
-            // console.log(subModel)
-          }
-        });
-        let model = {
-          id: e.id,
-          name: e.name,
-          subTestList: subHeaderArr
-        }
-        if (subHeaderArr.length > 0)
-          this.testList.push(model);
-      });
-      this.previousCategoryList = this.testList;
-      // console.log(this.testList)
+    let newCategoryList = this.previousSubCategoryList.length > 0 ? this.previousSubCategoryList : this.modelData;
+    this.modelData = [];
+    if (this.selectedCategoryItems.length == 0) {
+      this.getApiData();
+      return;
     }
+    newCategoryList.forEach((e: any) => {
+      let subHeaderArr: any[] = [];
+      let test: any[] = [];
+      let subModel = {
+        subClusterId: null,
+        name: null,
+        gridDataList: test
+      };
+      e.subClusterDataList.forEach((x: any) => {
+        let dataArr: any[] = [];
+        if (x.gridDataList != undefined) {
+          x.gridDataList.forEach((y: any) => {
+            let categoryArray: string[] = y.category.split(', ');
+            if ((categoryArray.some((r: any) => this.selectedCategoryItems.includes(r)) && isSelectedAll == false) || (categoryArray.some((r: any) => item.includes(r)) && isSelectedAll == true))
+            {
+              dataArr.push(y);
+            }
+          });
+        }
+        if (dataArr.length > 0) {
+          subModel = {
+            subClusterId: x.subClusterId,
+            name: x.name,
+            gridDataList: dataArr
+          };
+          if (dataArr.length > 0)
+            subHeaderArr.push(subModel)
+          // console.log(subModel)
+        }
+      });
+      let model = {
+        clusterId: e.clusterId,
+        name: e.name,
+        subClusterDataList: subHeaderArr
+      }
+      if (subHeaderArr.length > 0)
+        this.modelData.push(model);
+    });
+    this.previousCategoryList = this.modelData;
+    // console.log(this.testList)
+
   }
 
   onSubCategoryChange(item: any, isSelectedAll: boolean) {
     console.log(this.selectedCategoryItems);
-    if (this.selectedCategoryItems.length <= 0)
-      this.getData();
+  
     this.previousSubCategoryList = [];
-    let newSubCategoryList = this.previousCategoryList.length > 0 ? this.previousCategoryList : this.testList;
+    let newSubCategoryList = this.previousCategoryList.length > 0 ? this.previousCategoryList : this.modelData;
 
     if (this.selectedSubCategoryItems.length > 0) {
-      this.testList = [];
+      this.modelData = [];
 
       newSubCategoryList.forEach((e: any) => {
-        // let headerArr = [];
         let subHeaderArr: any[] = [];
         let test: any[] = [];
         let subModel = {
-          id: null,
+          subClusterId: null,
           name: null,
-          subTestDataList: test
+          gridDataList: test
         };
-        e.subTestList.forEach((x: any) => {
+        e.subClusterDataList.forEach((x: any) => {
           let dataArr: any[] = [];
-          if (x.subTestDataList != undefined) {
-            x.subTestDataList.forEach((y: any) => {
-              console.log(y.subCategory)
-              if ((this.selectedSubCategoryItems.includes(y.subCategory) && isSelectedAll == false) || (item.includes(y.subCategory) && isSelectedAll == true))
+          if (x.gridDataList != undefined) {
+            x.gridDataList.forEach((y: any) => {
+              let subcategoryArray: string[] = y.subCategory.split(', ');
+              if ((subcategoryArray.some((r: any) => this.selectedSubCategoryItems.includes(r)) && isSelectedAll == false) || (subcategoryArray.some((r: any) => item.includes(r)) && isSelectedAll == true))
+              {
+                // if ((this.selectedSubCategoryItems.includes(y.subCategory) && isSelectedAll == false) || (item.includes(y.subCategory) && isSelectedAll == true))
                 dataArr.push(y);
+              }
             });
           }
           if (dataArr.length > 0) {
+            console.log("x: ", x)
+            console.log("e", e)
             subModel = {
-              id: x.id,
+              subClusterId: x.subClusterId,
               name: x.name,
-              subTestDataList: dataArr
+              gridDataList: dataArr
             };
             if (dataArr.length > 0)
               subHeaderArr.push(subModel)
@@ -635,20 +868,22 @@ export class DataHeirarchyComponent implements OnInit {
           }
         });
         let model = {
-          id: e.id,
+          clusterId: e.clusterId,
           name: e.name,
-          subTestList: subHeaderArr
+          subClusterDataList: subHeaderArr
         }
         if (subHeaderArr.length > 0)
-          this.testList.push(model);
+          this.modelData.push(model);
       });
-      this.previousSubCategoryList = this.testList;
+      this.previousSubCategoryList = this.modelData;
     }
     else if (this.previousCategoryList.length > 0) {
-      this.testList = this.previousCategoryList;
+      this.modelData = this.previousCategoryList;
     }
     else {
-      this.getData();
+      this.modelData = [];
+        this.getApiData();
+        return;
     }
 
     console.log(this.testList)
@@ -658,9 +893,9 @@ export class DataHeirarchyComponent implements OnInit {
     this.sortOrder = property === this.sortProperty ? (this.sortOrder * -1) : 1;
     this.sortProperty = property;
     // console.log(this.testList.filter((x: any) => x.id == headerId && x.subTestList.some((y: any) => y.id == subHeaderId)));
-    this.testList.filter((x: any) => {
-      console.log(x.subTestList[subIndex].subTestDataList);
-      [...x.subTestList[subIndex].subTestDataList.sort((a: any, b: any) => {
+    this.modelData.filter((x: any) => {
+      console.log(x.subClusterDataList[subIndex].gridDataList);
+      [...x.subClusterDataList[subIndex].gridDataList.sort((a: any, b: any) => {
         let result = 0;
         if (a[property] < b[property]) {
           result = -1;
@@ -710,29 +945,101 @@ export class DataHeirarchyComponent implements OnInit {
   }
 
 
-  exportData() {
+  exportData(headerData: any, subHeaderData: any) {
     let newList: any[] = [];
-    if (this.testList.length > 0) {
-      this.testList.forEach((e: any) => {
-        e.subTestList.forEach((x: any) => {
-          if (x.subTestDataList != undefined) {
-            x.subTestDataList.forEach((y: any) => {
-              console.log(y)
-              newList.push(y);
-            });
-          }
-        });
+    if (this.modelData.length > 0 && headerData.clusterId != null) {
+      this.modelData.forEach((e: any) => {
+        if (e.clusterId == headerData.clusterId) {
+          e.subClusterDataList.forEach((x: any) => {
+            if (x.gridDataList != undefined && (subHeaderData == null || (subHeaderData.subClusterId != null && x.subClusterId == subHeaderData.subClusterId))) {
+              x.gridDataList.forEach((y: any) => {
+                console.log(y)
+                newList.push(y);
+              });
+            }
+          });
+        }
       });
     }
 
-    console.log(newList)
+    let exportName: any;
+    exportName = subHeaderData == null ? headerData.name : headerData.name + "_" + subHeaderData.name;
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(newList);
     const workbook: XLSX.WorkBook = XLSX.utils.book_new();
-
     // save to file
     XLSX.utils.book_append_sheet(workbook, ws, 'Sheet1');
-    XLSX.writeFile(workbook, 'DataLineageModel' + '.xls');
+    XLSX.writeFile(workbook, exportName + '.xlsx');
 
   }
+
+
+  //saveAsExcelFile(buffer: any, fileName: string): void {
+  //  import("file-saver").then(FileSaver => {
+  //    let EXCEL_TYPE =
+  //      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+
+  //    let EXCEL_EXTENSION = ".xlsx";
+  //    const data: Blob = new Blob([buffer], {
+  //      type: EXCEL_TYPE
+  //    });
+
+  //    FileSaver.saveAs(
+  //      data,
+  //      fileName + "_export_" + new Date().getTime() + EXCEL_EXTENSION
+  //    );
+  //  });
+
+  //}
+  openNormalizationRuleModal(template: TemplateRef<any>, fieldLength: number, standardFieldId: string, columnName: any, headerName: any) {
+    this.rule = [];
+    this.headerName = headerName;
+    this.getNormalizationRule(fieldLength, standardFieldId, columnName);
+
+    // this.normalizationRule = normalizationRule;
+    //if (normalizationRule.length <= 300)
+    //  this.modalRefNormalization = this.modalService.show(template, { class: 'gray modal-sm', backdrop: 'static' });
+    //if (normalizationRule.length >= 300 && normalizationRule.length <= 600)
+    //  this.modalRefNormalization = this.modalService.show(template, { class: 'gray modal-md', backdrop: 'static' });
+    //else
+    this.modalRefNormalization = this.modalService.show(template, { class: 'gray modal-lg', backdrop: 'static' });
+  }
+
+  getLinesToCopy(): string {
+    return this.rule;
+  }
+
+  data: any[] = [];
+
+  async GetFilterData(sqlQuery: string, isAdded: boolean, type: any): Promise<any> {
+    try {
+      const response = await this.filterapiService.getData(sqlQuery).toPromise();
+
+      this.data = response;
+
+      for (let i = 0; i < response.rows.length; i++) {
+        const keyValueData: { [key: string]: string } = {};
+        response.metaData.forEach((meta: any, j: any) => {
+          const key = meta.name;
+          const value = response.rows[i][j];
+          keyValueData[key] = value;
+
+        });
+        if (isAdded)
+          this.dataArray.push(keyValueData);
+        //if (type == 'category')
+        //  this.categoryList.push(keyValueData);
+        //if (type == 'subCategory')
+        //  this.subCategoryList.push(keyValueData);
+      }
+
+
+      return this.data;
+    }
+    catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  }
+
 }

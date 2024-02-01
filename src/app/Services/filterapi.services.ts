@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 
 export class FilterApiService {
-  private apiUrl = 'http://localhost:3000/api/data'; // Replace with your API URL
+  private apiUrl = 'http://IN01WS0001.scdom.net:8090/api/data';
   //private apiUrl = 'http://localhost:3000/api/data'; // Replace with your API URL
 
   constructor(private http: HttpClient) { }

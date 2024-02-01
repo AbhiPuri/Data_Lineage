@@ -1,1 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.css';
+
+.modal-open {
+  overflow-y: scroll;
+}
+
+.form-control.input-search {
+  height: 38px;
+  min-width: 200px;
+}
+
+.form-inline.justify-content-end {
+  margin-left: 70px;
+  height: 34px !important;
+  min-height: 30px;
+  max-width: 300px;
+}
+
+.form-inline.justify-content-icon-end {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  height: 34px !important;
+  min-height: 30px;
+  max-width: 20px;
+  /* min-width: 200px;*/
+}
+
+.form-inline.justify-content-column-chooser-end {
+  margin-left: 320px;
+  height: 24px !important;
+  min-height: 50px;
+  max-width: 50px;
+  /* min-width: 200px;*/
+}
+
+.form-inline.justify-content-tree-end {
+  margin-left: 640px;
+  height: 24px !important;
+  min-height: 50px;
+  max-width: 50px;
+  /* min-width: 200px;*/
+}
+
+.input-group {
+  position: absolute;
+  padding-right: 5px;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 20%;
+}
+
+.white-bg {
+  min-height: calc(100vh - 153px) !important;
+}
+
+.table-body {
+  height: calc(100vh - 180px) !important;
+  position: relative;
+  width: 100%;
+  font-size: 15px;
+  overflow-y: auto;
+  padding-bottom: 10px;
+  overflow-x: auto !important;
+}
+
+tr:nth-child(even) {
+  background: #e7feff;
+}
+
+th {
+  background: #a2add0;
+}

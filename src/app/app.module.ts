@@ -22,6 +22,7 @@ import { OverviewComponent } from './Components/overview/overview.component';
 //import { MatTabsModule } from '@angular/material/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
 //import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     FontAwesomeModule,
     ModalModule.forRoot(),
     ReactiveFormsModule,
+    ClipboardModule,
     //UiSwitchModule,
     //MatSlideToggleModule
   ],

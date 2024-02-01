@@ -145,7 +145,8 @@ export class HomeComponent {
     this.isOffcanvasOpen = !this.isOffcanvasOpen;
 
     if (this.isOffcanvasOpen) {
-      var sqlQueryGetClientData = `SELECT clientname FROM dms_client`;
+      var sqlQueryGetClientData = `SELECT client_name FROM dms_client`;
+      //var sqlQueryGetGridData = `Select DCNT.Client_Name, DCL.Cluster_Name, DSCL.Sub_Cluster_Name, DEV.Category_Name, DEV.Sub_Category_Name, DEV.Edm_Field_Name, DEV.Edm_Field_Component, DEV.Edm_Field_Export_Name, DEV.edm_field_definition, DEV.edm_field_mandatory, DEV.iscustom, DVM.vendor_name, DVF.vendor_field_name, DSV.scd_field_name, DSV.scd_model_name, DSV.scd_field_definition, DSV.scd_field_mandatory, DSF.cost From DMS_Standard_Fields DSF JOIN DMS_Client DCNT ON DCNT.Client_ID = DSF.Client_ID JOIN DMS_Cluster DCL ON DCL.Cluster_ID = DSF.Cluster_ID JOIN DMS_Sub_Cluster DSCL ON DSCL.Cluster_ID = DCL.Cluster_ID JOIN DMS_EDM_VENDOR DEV ON DEV.EDM_FIELD_ID = DSF.EDM_FIELD_ID JOIN DMS_VENDOR DVM ON DVM.VENDOR_ID = DSF.VENDOR_ID JOIN DMS_VENDOR_FIELDS DVF ON DVF.VENDOR_FIELD_ID = DSF.VENDOR_FIELD_ID LEFT OUTER JOIN DMS_SCD_VENDOR DSV ON DSV.SCD_FIELD_ID = DSF.SCD_FIELD_ID WHERE DCNT.Client_Name = 'STANDARD' AND DCL.Cluster_Name = 'INSTRUMENT' AND DSCL.SUB_Cluster_Name = 'EQUITY'`;
       this.GetFilterData(sqlQueryGetClientData).then((clientData) => {
         this.clients = clientData;
       });
@@ -168,8 +169,8 @@ export class HomeComponent {
 
   clientSelectionChanged() {
     if (this.selectedClient != 'None') {
-      var sqlQueryGetClusterData = `SELECT dclus.clustername FROM dms_cluster dclus INNER JOIN  dms_client dclnt ON dclus.clientid = dclnt.clientid WHERE dclnt.clientname = '${this.selectedClient}'`;
-      var sqlQueryGetCategoryData = `SELECT dcat.categoryname FROM dms_category dcat INNER JOIN  dms_client dclnt ON dcat.clientid = dclnt.clientid WHERE dclnt.clientname = '${this.selectedClient}'`;
+      var sqlQueryGetClusterData = `SELECT dclus.cluster_name FROM dms_cluster dclus INNER JOIN  dms_client dclnt ON dclus.client_id = dclnt.client_id WHERE dclnt.client_name = '${this.selectedClient}'`;
+      var sqlQueryGetCategoryData = `SELECT dcat.category_name FROM dms_category dcat INNER JOIN  dms_client dclnt ON dcat.client_id = dclnt.client_id WHERE dclnt.client_name = '${this.selectedClient}'`;
       this.GetFilterData(sqlQueryGetClusterData).then((clusterData) => {
         this.clusters = clusterData.map(([label]: string) => ({ label, checked: false }))
       });
@@ -185,7 +186,7 @@ export class HomeComponent {
     if (this.selectedCluster.length > 0) {
       //this.GetFilterData(this.selectedCluster.join(', '));
 
-      var sqlQueryGetSubClusterData = `Select sub_clustername From dms_sub_cluster dsc join dms_cluster dc on dsc.clusterid = dc.clusterid Where dc.clustername IN (${this.selectedCluster.join(', ').split(',').map(value => `'${value.trim()}'`)})`;
+      var sqlQueryGetSubClusterData = `Select sub_cluster_name From dms_sub_cluster dsc join dms_cluster dc on dsc.cluster_id = dc.cluster_id Where dc.cluster_name IN (${this.selectedCluster.join(', ').split(',').map(value => `'${value.trim()}'`)})`;
       this.GetFilterData(sqlQueryGetSubClusterData).then((data) => {
         this.subClusters = data.map(([label]: string) => ({ label, checked: false }));
       });
@@ -200,7 +201,7 @@ export class HomeComponent {
   CategoryCheckboxChanged(item: any) {
     this.selectedCategory = this.categories.filter((category) => category.checked).map((category) => category.label);
     if (this.selectedCategory.length > 0) {
-      var sqlQueryGetSubCategoryData = `Select dscat.sub_categoryname From dms_sub_category dscat join dms_category dcat on dscat.categoryid = dcat.categoryid Where dcat.categoryname IN (${this.selectedCategory.join(', ').split(',').map(value => `'${value.trim()}'`)})`;
+      var sqlQueryGetSubCategoryData = `Select dscat.sub_category_name From dms_sub_category dscat join dms_category dcat on dscat.category_id = dcat.category_id Where dcat.category_name IN (${this.selectedCategory.join(', ').split(',').map(value => `'${value.trim()}'`)})`;
       this.GetFilterData(sqlQueryGetSubCategoryData).then((data) => {
         this.subCategories = data.map(([label]: string) => ({ label, checked: false }));
       });
@@ -374,8 +375,17 @@ export class HomeComponent {
   async GetFilterData(sqlQuery: string): Promise<any> {
     try {
       const response = await this.filterapiService.getData(sqlQuery).toPromise();
-      this.data = response;
+      this.data = response.rows;
       return this.data;
+
+      //for (let i = 0; i < response.rows.length; i++) {
+      //  const keyValueData: { [key: string]: string } = {};
+      //  response.metaData.forEach((meta: any, j: any) => {
+      //    const key = meta.name;
+      //    const value = response.rows[i][j];
+      //    keyValueData[key] = value;
+      //  });
+      //}
     }
     catch (error) {
       console.error('Error:', error);
