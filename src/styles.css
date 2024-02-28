@@ -20,15 +20,13 @@
 .form-inline.justify-content-icon-end {
   margin-right: 5px;
   margin-bottom: 5px;
-  height: 34px !important;
-  min-height: 30px;
-  max-width: 20px;
+  width:350px;
   /* min-width: 200px;*/
 }
 
 .form-inline.justify-content-column-chooser-end {
-  margin-left: 800px;
-  /*margin-right: 60px;*/
+    margin-right: calc(100vh - 250px) !important;
+  /*margin-left: 100vh !important;*/
   height: 24px !important;
   min-height: 50px;
   max-width: 50px;
@@ -50,19 +48,33 @@
   align-items: stretch;
   width: 20%;
 }
+/*.multiselect-dropdown .dropdown-btn {
+  max-height: 3em !important;*/ /* Adjust this value as needed */
+  /*overflow-y: hidden;
+  padding: 10px 10px;
+}*/
+  .multiselect-dropdown .dropdown-btn .selected-item-container .selected-item {
+    max-width: 150px !important;
+   /* padding: 5px 5px !important;*/
+  }
+/*.multiselect-dropdown {
+  max-width: 260px !important;
+}*/
 
 .white-bg {
   min-height: calc(100vh - 153px) !important;
 }
 
 .table-body {
+  /*height: calc(100vh - 180px) !important;*/
   height: calc(100vh - 180px) !important;
   position: relative;
   width: 100%;
   font-size: 15px;
-  overflow-y: auto;
+  overflow-x:auto;
+  overflow-y:hidden;
   padding-bottom: 10px;
-  overflow-x: auto !important;
+  /*overflow-x: auto !important;*/
 }
 
 tr:nth-child(even) {
@@ -71,18 +83,39 @@ tr:nth-child(even) {
 
 th {
   background: #a2add0;
+  font-weight: 600;
   min-width: stretch;
 }
 .table-container {
-  overflow-x: auto !important;
   width: 100%;
+  height: 600px;
   white-space: nowrap;
-  border-spacing: 20px;
+  border-spacing: 30px;
+  position: relative;
 
 }
 
 .table-container th, .table-container td {
-    padding: 10px; /* Adjust the padding as needed */
+    padding: 7px;  
 }
 
- 
+
+.table-1 {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  position: sticky;
+  top: 0;
+  width: 100%;
+}
+
+/*.body-1 {
+  z-index: 1;
+  height: calc(100vh - 180px) !important;
+  position: relative;
+  width: 100%;
+  font-size: 15px;*/
+  /*overflow:hidden;*/
+  /*overflow-y: scroll !important;
+  padding-bottom: 10px;*/
+  /*overflow-x: auto !important;*/
+/*}*/

@@ -52,7 +52,6 @@ export class DataHeirarchyComponent implements OnInit {
     { columnName: "ScdFieldTranslation", isRequired: false, showColumn: false },
     { columnName: "ScdFieldFormula", isRequired: false, showColumn: false },
     { columnName: "ScdFieldSpecification", isRequired: false, showColumn: false },
-    { columnName: "ChatGptOutput", isRequired: false, showColumn: false },
     { columnName: "IsCustom", isRequired: false, showColumn: false },
     { columnName: "VendorName", isRequired: true, showColumn: true },
     { columnName: "VendorFieldName", isRequired: true, showColumn: true },
@@ -60,7 +59,6 @@ export class DataHeirarchyComponent implements OnInit {
     { columnName: "ScdModelName", isRequired: true, showColumn: true },
     { columnName: "ScdFieldDefinition", isRequired: false, showColumn: false },
     { columnName: "ScdFieldMandatory", isRequired: true, showColumn: true },
-    { columnName: "ScdChatGptOutput", isRequired: false, showColumn: false },
     { columnName: "Cost", isRequired: true, showColumn: true },
 
   ];
@@ -68,64 +66,7 @@ export class DataHeirarchyComponent implements OnInit {
   modalRefNormalization: BsModalRef | any;
   modalRef2: BsModalRef | any;
   selecttabbox: any = 1;
-  codeLines =
-    ` if (!string.IsNullOrEmpty(Source.DescriptiveInfo.COUNTRY) && Source.DescriptiveInfo.COUNTRY == "SNAT")
-   
-            return Lookups.Countries.GetItemById("SNAT");
 
-       else if (Source.DescriptiveInfo.COUNTRY == "MULT")
-
-            return Lookups.Countries.GetItemById("MULT");
-
-       if (!string.IsNullOrEmpty(Source.DescriptiveInfo.CNTRY_ISSUE_ISO))
-
-            return Lookups.Countries.GetItemById(Source.DescriptiveInfo.CNTRY_ISSUE_ISO);
-
-       if (!string.IsNullOrEmpty(Source.DescriptiveInfo.CNTRY_OF_INCORPORATION))
-
-            return Lookups.Countries.GetItemById(Source.DescriptiveInfo.CNTRY_OF_INCORPORATION);
-
-       var country = Mappings.NORM_BL_CountryToISOCode.Transform(Source.DescriptiveInfo.COUNTRY, Source.DescriptiveInfo.MARKET_SECTOR_DES);
-
-       if (country != null && country.CountryISO != null)
-            return Lookups.Countries.GetItemById(country.CountryISO);
-
-       return null;
- if (!string.IsNullOrEmpty(Source.DescriptiveInfo.COUNTRY) && Source.DescriptiveInfo.COUNTRY == "SNAT")
-
-            return Lookups.Countries.GetItemById("SNAT");
-
-       else if (Source.DescriptiveInfo.COUNTRY == "MULT")
-
-            return Lookups.Countries.GetItemById("MULT");
-
-       if (!string.IsNullOrEmpty(Source.DescriptiveInfo.CNTRY_ISSUE_ISO))
-
-            return Lookups.Countries.GetItemById(Source.DescriptiveInfo.CNTRY_ISSUE_ISO);
-
-       if (!string.IsNullOrEmpty(Source.DescriptiveInfo.CNTRY_OF_INCORPORATION))
-
-            return Lookups.Countries.GetItemById(Source.DescriptiveInfo.CNTRY_OF_INCORPORATION);
-
-       var country = Mappings.NORM_BL_CountryToISOCode.Transform(Source.DescriptiveInfo.COUNTRY, Source.DescriptiveInfo.MARKET_SECTOR_DES);
-
-       if (country != null && country.CountryISO != null)
-            return Lookups.Countries.GetItemById(country.CountryISO);
-
-       return null;
- `;
-  codeLines2 =
-    `if (Source.Warrants != null && !String.IsNullOrEmpty(Source.Warrants.ISSUER_CMPID))
-	        return SecMaster_Institution.GetByBloombergSilverInstitutionKey("Bloomberg", Source.Warrants.ISSUER_CMPID);
-
-      if (Source.SecurityIdentifiers.ID_BB_COMPANY.HasValue)
-	        return SecMaster_Institution.GetByBloombergSilverInstitutionKey("Bloomberg", Source.SecurityIdentifiers.ID_BB_COMPANY.Value.ToString());
-
-      return null;
- `;
-  codeLines3 =
-    `return Lookups.BBGSpecificCouponTypes.GetItemById(Source.DescriptiveInfo.CPN_TYP_SPECIFIC);
- `;
   rule: any;
   rowData: any;
   dataArray: any[] = [];
@@ -139,302 +80,21 @@ export class DataHeirarchyComponent implements OnInit {
   ) {
 
   }
-
-  getData() {
-    this.testList = [
-      {
-        id: 1,
-        name: 'Instrument',
-        subTestList: [
-          {
-            id: 1,
-            name: 'Equity',
-            subTestDataList: [
-              {
-                id: 1,
-                category: ['Static'],
-                subCategory: 'Characteristics',
-                edmFieldName: 'SecurityName',
-                edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'SecurityName',
-                edmFieldDefinition: 'SecurityName',
-                edmFieldMandatory: 'Mandatory',
-                edmFieldNormalization: this.codeLines,
-                edmFieldDerivation: ' ',
-                chatGptOutput: ' ',
-                isCustom: 'N',
-                vendorName: 'Open Source',
-                vendorFieldName: 'SecurityName',
-                scdFieldName: 'SecurityName',
-                scdModelName: 'Equities',
-                scdFieldDefinition: 'The long name of the security.',
-                scdFieldMandatory: 'Optional',
-                scdFieldTranslation: 'N/A',
-                scdFieldFormula: 'N/A',
-                scdChatGptOutput: 'None',
-                cost: '$1',
-              },
-              {
-                id: 2,
-                category: ['Static', 'Identifiers'],
-                subCategory: 'Characteristics',
-                edmFieldName: 'SecurityName',
-                edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'SecurityName',
-                edmFieldDefinition: 'SecurityName',
-                edmFieldMandatory: 'Optional',
-                edmFieldNormalization: this.codeLines2,
-                edmFieldDerivation: ' ',
-                chatGptOutput: ' ',
-                isCustom: 'N',
-                vendorName: 'Open Source',
-                vendorFieldName: 'SecurityName',
-                scdFieldName: 'SecurityName',
-                scdModelName: 'Equities',
-                scdFieldDefinition: 'The long name of the security.',
-                scdFieldMandatory: 'Optional',
-                scdFieldTranslation: 'N/A',
-                scdFieldFormula: 'N/A',
-                scdChatGptOutput: 'None',
-                cost: '$4',
-              },
-            ]
-
-          },
-          {
-            id: 2,
-            name: 'Bond',
-            subTestDataList: [
-              {
-                id: 3,
-                category: ['Static'],
-                subCategory: 'Characteristics',
-                edmFieldName: 'SecurityName',
-                edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'SecurityName',
-                edmFieldDefinition: 'SecurityName',
-                edmFieldMandatory: 'Mandatory',
-                edmFieldNormalization: this.codeLines3,
-                edmFieldDerivation: ' ',
-                chatGptOutput: ' ',
-                isCustom: 'N',
-                vendorName: 'Open Source',
-                vendorFieldName: 'SecurityName',
-                scdFieldName: 'SecurityName',
-                scdModelName: 'Equities',
-                scdFieldDefinition: 'The long name of the security.',
-                scdFieldMandatory: 'Optional',
-                scdFieldTranslation: 'N/A',
-                scdFieldFormula: 'N/A',
-                scdChatGptOutput: 'None',
-                cost: '$1',
-              },
-              {
-                id: 4,
-                category: ['Static'],
-                subCategory: 'Characteristics',
-                edmFieldName: 'SecurityName',
-                edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'SecurityName',
-                edmFieldDefinition: 'SecurityName',
-                edmFieldMandatory: 'Mandatory',
-                edmFieldNormalization: ' ',
-                edmFieldDerivation: ' ',
-                chatGptOutput: ' ',
-                isCustom: 'N',
-                vendorName: 'Open Source',
-                vendorFieldName: 'SecurityName',
-                scdFieldName: 'SecurityName',
-                scdModelName: 'Equities',
-                scdFieldDefinition: 'The long name of the security.',
-                scdFieldMandatory: 'Optional',
-                scdFieldTranslation: 'N/A',
-                scdFieldFormula: 'N/A',
-                scdChatGptOutput: 'None',
-                cost: '$1',
-              },
-            ]
-          },
-        ]
-      },
-      {
-        id: 2,
-        name: 'Services',
-        subTestList: [
-          {
-            id: 1,
-            name: 'IAS',
-            subTestDataList: [
-              {
-                id: 5,
-                category: ['Static'],
-                subCategory: 'Characteristics',
-                edmFieldName: 'SecurityName',
-                edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'SecurityName',
-                edmFieldDefinition: 'SecurityName',
-                edmFieldMandatory: 'Mandatory',
-                edmFieldNormalization: ' ',
-                edmFieldDerivation: ' ',
-                chatGptOutput: ' ',
-                isCustom: 'N',
-                vendorName: 'Open Source',
-                vendorFieldName: 'SecurityName',
-                scdFieldName: 'SecurityName',
-                scdModelName: 'Equities',
-                scdFieldDefinition: 'The long name of the security.',
-                scdFieldMandatory: 'Optional',
-                scdFieldTranslation: 'N/A',
-                scdFieldFormula: 'N/A',
-                scdChatGptOutput: 'None',
-                cost: '$1',
-              },
-              {
-                id: 6,
-                category: ['Static'],
-                subCategory: 'Characteristics',
-                edmFieldName: 'SecurityName',
-                edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'SecurityName',
-                edmFieldDefinition: 'SecurityName',
-                edmFieldMandatory: 'Mandatory',
-                edmFieldNormalization: ' ',
-                edmFieldDerivation: ' ',
-                chatGptOutput: ' ',
-                isCustom: 'N',
-                vendorName: 'Open Source',
-                vendorFieldName: 'SecurityName',
-                scdFieldName: 'SecurityName',
-                scdModelName: 'Equities',
-                scdFieldDefinition: 'The long name of the security.',
-                scdFieldMandatory: 'Optional',
-                scdFieldTranslation: 'N/A',
-                scdFieldFormula: 'N/A',
-                scdChatGptOutput: 'None',
-                cost: '$1',
-              },
-            ]
-          },
-          {
-            id: 2,
-            name: 'IOS',
-            subTestDataList: [
-              {
-                id: 7,
-                category: ['Static'],
-                subCategory: 'Characteristics',
-                edmFieldName: 'SecurityName',
-                edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'SecurityName',
-                edmFieldDefinition: 'SecurityName',
-                edmFieldMandatory: 'Mandatory',
-                edmFieldNormalization: ' ',
-                edmFieldDerivation: ' ',
-                chatGptOutput: ' ',
-                isCustom: 'N',
-                vendorName: 'Open Source',
-                vendorFieldName: 'SecurityName',
-                scdFieldName: 'SecurityName',
-                scdModelName: 'Equities',
-                scdFieldDefinition: 'The long name of the security.',
-                scdFieldMandatory: 'Optional',
-                scdFieldTranslation: 'N/A',
-                scdFieldFormula: 'N/A',
-                scdChatGptOutput: 'None',
-                cost: '$1',
-              },
-              {
-                id: 8,
-                category: ['Static'],
-                subCategory: 'Characteristics',
-                edmFieldName: 'SecurityName',
-                edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'SecurityName',
-                edmFieldDefinition: 'SecurityName',
-                edmFieldMandatory: 'Mandatory',
-                edmFieldNormalization: ' ',
-                edmFieldDerivation: ' ',
-                chatGptOutput: ' ',
-                isCustom: 'N',
-                vendorName: 'Open Source',
-                vendorFieldName: 'SecurityName',
-                scdFieldName: 'SecurityName',
-                scdModelName: 'Equities',
-                scdFieldDefinition: 'The long name of the security.',
-                scdFieldMandatory: 'Optional',
-                scdFieldTranslation: 'N/A',
-                scdFieldFormula: 'N/A',
-                scdChatGptOutput: 'None',
-                cost: '$1',
-              },
-              {
-                id: 9,
-                category: ['Static'],
-                subCategory: 'Characteristics',
-                edmFieldName: 'SecurityName',
-                edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'SecurityName',
-                edmFieldDefinition: 'SecurityName',
-                edmFieldMandatory: 'Mandatory',
-                edmFieldNormalization: ' ',
-                edmFieldDerivation: ' ',
-                chatGptOutput: ' ',
-                isCustom: 'N',
-                vendorName: 'Open Source',
-                vendorFieldName: 'SecurityName',
-                scdFieldName: 'SecurityName',
-                scdModelName: 'Equities',
-                scdFieldDefinition: 'The long name of the security.',
-                scdFieldMandatory: 'Optional',
-                scdFieldTranslation: 'N/A',
-                scdFieldFormula: 'N/A',
-                scdChatGptOutput: 'None',
-                cost: '$1',
-              },
-              {
-                id: 10,
-                category: ['Static'],
-                subCategory: 'Characteristics',
-                edmFieldName: 'SecurityName',
-                edmFieldComponent: 'Instrument',
-                edmFieldExportName: 'SecurityName',
-                edmFieldDefinition: 'SecurityName',
-                edmFieldMandatory: 'Mandatory',
-                edmFieldNormalization: ' ',
-                edmFieldDerivation: ' ',
-                chatGptOutput: ' ',
-                isCustom: 'N',
-                vendorName: 'Open Source',
-                vendorFieldName: 'SecurityName',
-                scdFieldName: 'SecurityName',
-                scdModelName: 'Equities',
-                scdFieldDefinition: 'The long name of the security.',
-                scdFieldMandatory: 'Optional',
-                scdFieldTranslation: 'N/A',
-                scdFieldFormula: 'N/A',
-                scdChatGptOutput: 'None',
-                cost: '$1',
-              },
-            ]
-          },
-        ]
-      },
-    ];
-  }
   ngOnInit() {
-    this.getData();
     this.getApiData();
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
       textField: 'name',
+      classes: "bottom-set custom-class ",
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
+      itemsShowLimit: 2,
+      allowSearchFilter: true,
+      badgeShowLimit: 1,
     };
-
   }
+  
 
   getApiData() {
     let sqlQueryGetGridData: any;
@@ -463,7 +123,6 @@ export class DataHeirarchyComponent implements OnInit {
     this.GetFilterData(sqlQueryGetGridData, true, '').then((x) => {
       this.rowData = x;
       this.getList();
-      console.log(this.modelData)
       this.getCategoryList();
       this.getSubCategoryList();
       //const normalizationPromises: Promise<any>[] = [];
@@ -749,36 +408,32 @@ export class DataHeirarchyComponent implements OnInit {
 
           });
         }
-        if (dataArr.length > 0) {
-          subModel = {
-            subClusterId: x.subClusterId,
-            name: x.name,
-            gridDataList: dataArr
-          };
-          if (dataArr.length > 0)
-            subHeaderArr.push(subModel);
-        }
+        subModel = {
+          subClusterId: x.subClusterId,
+          name: x.name,
+          gridDataList: dataArr
+        };
+        subHeaderArr.push(subModel);
       });
       let model = {
         clusterId: e.clusterId,
         name: e.name,
         subClusterDataList: subHeaderArr
       }
-      if (subHeaderArr.length > 0)
-        this.modelData.push(model);
-
+      this.modelData.push(model);
     });
     console.log(this.modelData)
   }
 
   onItemChange(item: any, isSelectedAll: boolean) {
     this.getList();
-    if (this.selectedCategoryItems.length == 0) 
+    if (this.selectedCategoryItems.length == 0 && this.selectedSubCategoryItems.length == 0)
       return;
-    this.previousCategoryList = [];
-    let newCategoryList = this.previousSubCategoryList.length > 0 ? this.previousSubCategoryList : this.modelData;
+
+    let newCategoryList = this.modelData;
     this.modelData = [];
-   
+    if (isSelectedAll == true)
+      this.selectedCategoryItems = item;
     newCategoryList.forEach((e: any) => {
       let subHeaderArr: any[] = [];
       let test: any[] = [];
@@ -792,89 +447,76 @@ export class DataHeirarchyComponent implements OnInit {
         if (x.gridDataList != undefined) {
           x.gridDataList.forEach((y: any) => {
             let categoryArray: string[] = y.category.split(', ');
-            if ((categoryArray.some((r: any) => this.selectedCategoryItems.includes(r)) && isSelectedAll == false) || (categoryArray.some((r: any) => item.includes(r)) && isSelectedAll == true))
-            {
+            let subcategoryArray: string[] = y.subCategory.split(', ');
+            let selectedCondition = this.selectedSubCategoryItems.length > 0 ? subcategoryArray.some((r: any) => this.selectedSubCategoryItems.includes(r)) &&
+              categoryArray.some((r: any) => this.selectedCategoryItems.includes(r)) : categoryArray.some((r: any) => this.selectedCategoryItems.includes(r))
+
+            if (selectedCondition == true || (this.selectedCategoryItems.length <= 0 && this.selectedSubCategoryItems.length > 0 && subcategoryArray.some((r: any) => this.selectedSubCategoryItems.includes(r)))) {
               dataArr.push(y);
             }
           });
         }
-        if (dataArr.length > 0) {
-          subModel = {
-            subClusterId: x.subClusterId,
-            name: x.name,
-            gridDataList: dataArr
-          };
-          if (dataArr.length > 0)
-            subHeaderArr.push(subModel)
-          // console.log(subModel)
-        }
+        subModel = {
+          subClusterId: x.subClusterId,
+          name: x.name,
+          gridDataList: dataArr
+        };
+        subHeaderArr.push(subModel);
       });
       let model = {
         clusterId: e.clusterId,
         name: e.name,
         subClusterDataList: subHeaderArr
       }
-      if (subHeaderArr.length > 0)
-        this.modelData.push(model);
+      this.modelData.push(model);
     });
-    this.previousCategoryList = this.modelData;
-
   }
 
   onSubCategoryChange(item: any, isSelectedAll: boolean) {
     this.getList();
-    this.previousSubCategoryList = [];
-    let newSubCategoryList = this.previousCategoryList.length > 0 ? this.previousCategoryList : this.modelData;
+    if (this.selectedSubCategoryItems.length == 0 && this.selectedCategoryItems.length == 0)
+      return;
 
-    if (this.selectedSubCategoryItems.length > 0) {
-      this.modelData = [];
+    let newSubCategoryList = this.modelData;
+    this.modelData = [];
+    if (isSelectedAll == true)
+      this.selectedSubCategoryItems = item;
+    newSubCategoryList.forEach((e: any) => {
+      let subHeaderArr: any[] = [];
+      let test: any[] = [];
+      let subModel = {
+        subClusterId: null,
+        name: null,
+        gridDataList: test
+      };
+      e.subClusterDataList.forEach((x: any) => {
+        let dataArr: any[] = [];
+        if (x.gridDataList != undefined) {
+          x.gridDataList.forEach((y: any) => {
+            let subcategoryArray: string[] = y.subCategory.split(', ');
+            let categoryArray: string[] = y.category.split(', ');
+            let selectedCondition = this.selectedCategoryItems.length > 0 ? categoryArray.some((r: any) => this.selectedCategoryItems.includes(r)) &&
+              subcategoryArray.some((r: any) => this.selectedSubCategoryItems.includes(r)) : subcategoryArray.some((r: any) => this.selectedSubCategoryItems.includes(r))
 
-      newSubCategoryList.forEach((e: any) => {
-        let subHeaderArr: any[] = [];
-        let test: any[] = [];
-        let subModel = {
-          subClusterId: null,
-          name: null,
-          gridDataList: test
-        };
-        e.subClusterDataList.forEach((x: any) => {
-          let dataArr: any[] = [];
-          if (x.gridDataList != undefined) {
-            x.gridDataList.forEach((y: any) => {
-              let subcategoryArray: string[] = y.subCategory.split(', ');
-              if ((subcategoryArray.some((r: any) => this.selectedSubCategoryItems.includes(r)) && isSelectedAll == false) || (subcategoryArray.some((r: any) => item.includes(r)) && isSelectedAll == true))
-              {
-                dataArr.push(y);
-              }
-            });
-          }
-          if (dataArr.length > 0) {
-            subModel = {
-              subClusterId: x.subClusterId,
-              name: x.name,
-              gridDataList: dataArr
-            };
-            if (dataArr.length > 0)
-              subHeaderArr.push(subModel)
-            console.log(subModel)
-          }
-        });
-        let model = {
-          clusterId: e.clusterId,
-          name: e.name,
-          subClusterDataList: subHeaderArr
+            if (selectedCondition == true || (this.selectedSubCategoryItems.length <= 0 && this.selectedCategoryItems.length > 0 && categoryArray.some((r: any) => this.selectedCategoryItems.includes(r)))) {
+              dataArr.push(y);
+            }
+          });
         }
-        if (subHeaderArr.length > 0)
-          this.modelData.push(model);
+        subModel = {
+          subClusterId: x.subClusterId,
+          name: x.name,
+          gridDataList: dataArr
+        };
+        subHeaderArr.push(subModel);
       });
-      this.previousSubCategoryList = this.modelData;
-    }
-    else if (this.previousCategoryList.length > 0) {
-      this.modelData = this.previousCategoryList;
-    }
-    else {
-        return;
-    }
+      let model = {
+        clusterId: e.clusterId,
+        name: e.name,
+        subClusterDataList: subHeaderArr
+      }
+      this.modelData.push(model);
+    });
 
   }
 
@@ -895,10 +537,7 @@ export class DataHeirarchyComponent implements OnInit {
         console.log(result * this.sortOrder)
         return result * this.sortOrder;
       })];
-
     });
-
-
   }
 
 
@@ -1016,13 +655,7 @@ export class DataHeirarchyComponent implements OnInit {
         });
         if (isAdded)
           this.dataArray.push(keyValueData);
-        //if (type == 'category')
-        //  this.categoryList.push(keyValueData);
-        //if (type == 'subCategory')
-        //  this.subCategoryList.push(keyValueData);
       }
-
-
       return this.data;
     }
     catch (error) {
@@ -1030,5 +663,6 @@ export class DataHeirarchyComponent implements OnInit {
       throw error;
     }
   }
+
 
 }

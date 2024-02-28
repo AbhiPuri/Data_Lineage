@@ -1,5 +1,5 @@
 <div class="page-alignment">
-  <div class="row ml-0 mr-0 pr-3 pt-0" style="margin-bottom:-2px">
+  <div class="row ml-0 mr-0 pr-3 pt-4">
     <div class="col-9">
       <h3> Data Model Filteration</h3>
     </div>
@@ -15,12 +15,14 @@
             </span>
           </div>
         </div>
+
       </div>
     </div>
   </div>
   <div class="row" *ngIf="modelData.length > 0">
-    <div class="col-3" *ngIf="categoryList.length > 0">
-      <div class="form-inline justify-icon-end">
+    
+    <div class="col" *ngIf="categoryList.length > 0">
+      <div class="form-group pr-2">
         <ng-multiselect-dropdown [placeholder]="'Select Category'"
                                  [settings]="dropdownSettings"
                                  [data]="categoryList"
@@ -31,8 +33,9 @@
         </ng-multiselect-dropdown>
       </div>
     </div>
-    <div class="col-3"  *ngIf="subCategoryList.length > 0">
-      <div class="form-inline justify-icon-end">
+    <div class="col" *ngIf="subCategoryList.length > 0">
+
+      <div class="form-group pr-2">
         <ng-multiselect-dropdown [placeholder]="'Select Sub Category'"
                                  [settings]="dropdownSettings"
                                  [data]="subCategoryList"
@@ -45,16 +48,16 @@
     </div>
 
     <!--<div class="col-3">
-      <div class="form-inline justify-content-tree-end">
-        <button type="button" class="btn btn-success mr-2" tooltip="Tree Popup" (click)="openHierarchyModal()">
-          <fa-icon [icon]="treeIcon"></fa-icon>
-        </button>
-      </div>
-    </div>-->
-    <div class="col-3">
-      <div class="form-inline justify-content-column-chooser-end" style="margin-bottom: -5px">
+    <div class="form-inline justify-content-tree-end">
+      <button type="button" class="btn btn-success mr-2" tooltip="Tree Popup" (click)="openHierarchyModal()">
+        <fa-icon [icon]="treeIcon"></fa-icon>
+      </button>
+    </div>
+  </div>-->
+    <div class="col-6">
+      <div class="form-inline justify-content-column-chooser-end">
         <button type="button" class="btn btn-success pull-right mr-2" tooltip="Column Chooser" placement="right" (click)="openModal(template)">
-          <fa-icon style="right: 10px; top: 0px;" [icon]="columnChooserIcon"></fa-icon>
+          <fa-icon style="right: 10px; top: 6px;" [icon]="columnChooserIcon"></fa-icon>
         </button>
       </div>
     </div>
@@ -76,7 +79,7 @@
           <!--<div class="accordion-body">-->
           <div class="sub-accordion-box " *ngFor="let subCluster of cluster.subClusterDataList; let rIndex=index ">
             <div class="sub-accordion-header " (click)="accordionSub(i, rIndex)">
-              {{subCluster.name}}
+              {{subCluster.name}} <span>({{subCluster.gridDataList.length <= 0 ? 0: subCluster.gridDataList.length}})</span>
 
               <div class="icons-box">
                 <!--<i class="fa" [ngClass]="subAccordion == rIndex ?'fa-angle-up':'fa-angle-down'"></i>-->
@@ -86,11 +89,11 @@
             </div>
             <!--<div class="sub-accordion-body" *ngIf="(subAccordion[i].includes(rIndex))">-->
             <div class="sub-accordion-body table-container" *ngIf="subAccordion.includes(rIndex) && mainAccordion.includes(i+1) && i == mainAccIndex">
-              <table>
+              <table class="table-1">
                 <thead>
                   <tr>
                     <ng-container *ngFor="let defaultViewColumn of defaultViewColumns">
-                      <th *ngIf="defaultViewColumn.showColumn === true" style="width:stretch">
+                      <th *ngIf="defaultViewColumn.showColumn === true">
                         <span  (click)="sort('category', rIndex)" *ngIf="defaultViewColumn.columnName === 'Category'">
                           Category <fa-icon [icon]="sortIcon"></fa-icon>
                         </span>
@@ -190,7 +193,7 @@
                 <tbody>
                   <tr *ngFor="let listColumn of subCluster.gridDataList" style="width:100%;">
                     <ng-container *ngFor="let defaultViewColumn of defaultViewColumns">
-                      <td *ngIf="defaultViewColumn.showColumn === true" style="width:stretch">
+                      <td *ngIf="defaultViewColumn.showColumn === true">
                         <!--<span *ngIf="defaultViewColumn.columnName === 'Id'">
                           {{listColumn.id}}-->
                           <!--<span class="custom-control custom-switch custom-control-inline align-middle">
@@ -236,6 +239,12 @@
                       </button>
                     </td>
                   </tr>
+                  <tr class="no-data" *ngIf ="subCluster.gridDataList.length <= 0">
+                    <td colspan="10">
+                      No Records Found
+                    </td>
+                  
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -245,8 +254,6 @@
     </div>
   </div>
 </div>
-
-<!--Column Chooser UI-->
 <ng-template #template>
   <div class="modal-header">
     <h4 class="modal-title pull-left">All Columns</h4>

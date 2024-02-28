@@ -1,11 +1,10 @@
 
 .accordion-box {
   margin-bottom: 10px;
-  margin-top: -10px;
   .accordion-header
 
 {
-  height: 45px;
+  height: 40px;
   width: 100%;
   border-radius: 2px;
   background-color: #002060;
@@ -13,8 +12,8 @@
   font-size: 18px;
   font-weight: 500;
   letter-spacing: 0;
-  line-height: 27px;
-  padding: 10px 20px;
+  line-height: 20px;
+  padding: 10px 10px;
   position: relative;
   cursor: pointer;
   .icons-box
@@ -56,9 +55,10 @@
 }
 
 .accordion-body {
-  padding: 10px 20px;
+  padding: 0px 20px;
   width: 100%;
   position: relative;
+  margin-top: 5px;
 }
 
 .sub-accordion-box {
@@ -67,16 +67,16 @@
 
 {
   cursor: pointer;
-  height: 42px;
+  height: 37px;
   width: 100%;
   border-radius: 2px;
   background-color: #595959;
-  padding: 10px 20px;
+  padding: 10px 10px;
   color: #FFFFFF;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0;
-  line-height: 21px;
+  line-height: 18px;
   position: relative;
   .icons-box
 
@@ -115,9 +115,12 @@
 }
 
 .sub-accordion-body {
-  padding: 10px 20px;
+  padding: 0px 20px;
   width: 100%;
   position: relative;
+  overflow: auto;
+  height: calc(100vh - 265px);
+  margin-top: 5px;
 }
 
 .data-table {
@@ -154,10 +157,19 @@ tbody {
 
 td {
   width: 300px;
+  padding: 8px;
 }
 
 th {
   width: inherit;
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+}
+
+thead {
+  border-collapse: collapse;
+  border-spacing: 0 10px;
 }
 
 .btn-success {
@@ -458,8 +470,7 @@ input:checked + .slider:before {
 
 .page-alignment {
   min-height: calc(100vh - 150px);
-  /*min-height: calc(100% - 10px);*/
-  margin-top: 0px;
+  margin-top: 14px;
   width: calc(100% - 10px);
   padding: 5px 5px;
 }
@@ -471,9 +482,30 @@ input:checked + .slider:before {
   overflow-x: auto;
   padding: 20px 20px;
 }
-
-
-
 .right-modal {
   margin-left: auto;
 }
+
+.no-data {
+  font-weight: bold; /* Make the text bold */
+  text-align: center;
+  color: #d16b04;
+  font-size: 18px;
+}
+
+/*.multiselect-dropdown .dropdown-btn .selected-item-container .selected-item span {
+  width: 300px !important; 
+}*/
+
+
+
+/*.height-body{
+    max-block-size: 500px;
+    margin-top:50px;
+}*/
+/*.white-bg {
+  background: #fff;
+  max-height: calc(100vh - 150px);
+  margin-top: 14px;
+  padding: 0px 0px;
+}*/
