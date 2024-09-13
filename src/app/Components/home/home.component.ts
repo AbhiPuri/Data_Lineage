@@ -60,7 +60,7 @@ export class HomeComponent {
   public selectedClient: string;
 
   constructor(private filterapiService: FilterApiService) {
-    this.selectedClient = "None";
+    this.selectedClient = "Standard";
   }
 
   IsDataVisible: boolean = false;
@@ -194,7 +194,7 @@ export class HomeComponent {
       return this.selectedCluster.join(', ');
     }
     else {
-      return 'None';
+      return 'All';
     }
   }
 

@@ -15,6 +15,12 @@ import { DataHeirarchyComponent } from './Components/data-heirarchy/data-heirarc
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OverviewComponent } from './Components/overview/overview.component';
+import { NestedTreeHeirarchyComponent } from './Components/data-heirarchy/nested-tree-heirarchy/nested-tree-heirarchy.component';
+import { TreeLoaderComponent } from './Components/data-heirarchy/tree-loader/tree-loader.component';
+import { CommonModule } from "@angular/common";
+import { MatTreeModule } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
+import { LoginComponent } from './Components/login/login.component';
 
 //import { UiSwitchModule } from 'ngx-toggle-switch';
 //import { TestComponent } from './Components/test/test.component';
@@ -31,6 +37,9 @@ import { ClipboardModule } from 'ngx-clipboard';
     DataGridComponent,
     DataHeirarchyComponent,
     OverviewComponent,
+    NestedTreeHeirarchyComponent,
+    TreeLoaderComponent,
+    LoginComponent,
     //TestComponent
   ],
   imports: [
@@ -45,6 +54,9 @@ import { ClipboardModule } from 'ngx-clipboard';
     ModalModule.forRoot(),
     ReactiveFormsModule,
     ClipboardModule,
+    CommonModule,
+    MatTreeModule,
+    MatIconModule
     //UiSwitchModule,
     //MatSlideToggleModule
   ],

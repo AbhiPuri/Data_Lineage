@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.css';
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
 .modal-open {
   overflow-y: scroll;
@@ -10,11 +11,19 @@
   min-width: 200px;
 }
 
-.form-inline.justify-content-end {
-  margin-left: 80px;
+form-inline justify-content-dropdown-end {
+  margin-left: 50%;
   height: 34px !important;
   min-height: 30px;
-  max-width: 300px;
+  max-width: 150px;
+}
+
+.form-inline.justify-content-end {
+  margin-left: 55%;
+  margin-bottom:5px;
+  height: 34px !important;
+  min-height: 30px;
+  max-width: 200px;
 }
 
 .form-inline.justify-content-icon-end {
@@ -25,8 +34,7 @@
 }
 
 .form-inline.justify-content-column-chooser-end {
-    margin-right: calc(100vh - 250px) !important;
-  /*margin-left: 100vh !important;*/
+  /*margin-left: 30px;*/
   height: 24px !important;
   min-height: 50px;
   max-width: 50px;
@@ -34,7 +42,8 @@
 }
 
 .form-inline.justify-content-tree-end {
-  margin-left: 640px;
+/*  margin-right: 10vh !important;*/
+ /*  margin-left: 600px;*/
   height: 24px !important;
   min-height: 50px;
   max-width: 50px;
@@ -48,18 +57,14 @@
   align-items: stretch;
   width: 20%;
 }
-/*.multiselect-dropdown .dropdown-btn {
-  max-height: 3em !important;*/ /* Adjust this value as needed */
-  /*overflow-y: hidden;
-  padding: 10px 10px;
-}*/
-  .multiselect-dropdown .dropdown-btn .selected-item-container .selected-item {
-    max-width: 150px !important;
-   /* padding: 5px 5px !important;*/
-  }
-/*.multiselect-dropdown {
-  max-width: 260px !important;
-}*/
+.multiselect-dropdown .dropdown-btn {
+  max-height: 3em !important;
+  overflow-y: hidden;
+}
+.multiselect-dropdown .dropdown-btn .selected-item-container .selected-item {
+  max-width: 180px !important;
+  margin-bottom: 15px !important;
+}
 
 .white-bg {
   min-height: calc(100vh - 153px) !important;
@@ -87,8 +92,6 @@ th {
   min-width: stretch;
 }
 .table-container {
-  width: 100%;
-  height: 600px;
   white-space: nowrap;
   border-spacing: 30px;
   position: relative;
@@ -107,15 +110,84 @@ th {
   top: 0;
   width: 100%;
 }
+input[type="checkbox"]:checked {
+  /* background: #0a6c8b;*/
+  background: #9EBAF3;
+  color: white;
+}
 
-/*.body-1 {
-  z-index: 1;
-  height: calc(100vh - 180px) !important;
-  position: relative;
-  width: 100%;
-  font-size: 15px;*/
-  /*overflow:hidden;*/
-  /*overflow-y: scroll !important;
-  padding-bottom: 10px;*/
-  /*overflow-x: auto !important;*/
-/*}*/
+input[type="checkbox"] {
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: 0;
+  background: lightgray;
+  height: 18px;
+  width: 18px;
+  border: 1px solid white;
+  color: white;
+}
+
+  input[type="checkbox"]:after {
+    content: ' ';
+    position: relative;
+    left: 35%;
+    top: 22%;
+    width: 25%;
+    height: 50%;
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    transform: rotate(50deg);
+    display: none;
+  }
+
+  input[type="checkbox"]:checked:after {
+    display: block;
+  }
+
+  .example-tree {
+  div[role="group"] > .mat-tree-node {
+    padding-right: 40px;
+  }
+}
+.custom-size {
+  font-size: 8px;
+}
+.icon-wrapper {
+  text-align: center;
+}
+
+::-webkit-scrollbar {
+  width: 6px; 
+  height: 6px; 
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7c7185;
+  border-radius: 50px;
+  transition: background-color 0.1s; /* Smooth transition effect */
+}
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #563f46;
+  }
+
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  color: dimgray;
+  background-color: white;
+  font-weight: 800;
+  border: 0;
+  border-radius: 50%;
+  vertical-align: central;
+}

@@ -14,7 +14,7 @@
         <!--<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">-->
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="" routerLink="/test" target="_blank">Data Lineage</a>
+      <a class="navbar-brand" href="" routerLink="/test" target="_blank">GAIA</a>
       <!--<div style="height:40px; margin-top:0px; margin-bottom:0px">
         <p id="sect2" style=" height: 30px; width: 30px; margin-top:5px; margin-bottom:0px"></p>
         <p id="sect1" style=" height: 45px; width: 50px; margin-top:-40px; margin-bottom:0px; margin-left:30px"></p>
@@ -199,7 +199,7 @@
 
   <!--<div style="background-color: #0056b3;height: 35px">
   </div>-->
-  <div class="main-content" style="position: absolute" [@offcanvasAnimation]="isOffcanvasOpen ? 'open' : 'closed'">
+  <div class="main-content" style="position: absolute; overflow: hidden" [@offcanvasAnimation]="isOffcanvasOpen ? 'open' : 'closed'">
     <!--<app-data-grid></app-data-grid>-->
     <div *ngIf="IsDataVisible">
       <app-data-heirarchy ></app-data-heirarchy>

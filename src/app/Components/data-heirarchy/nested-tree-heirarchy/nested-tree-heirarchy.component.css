@@ -1,0 +1,315 @@
+.example-tree-invisible {
+  margin-top: 12px;
+  display: grid;
+}
+
+.example-tree ul,
+.example-tree li {
+  margin-top: 7px;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+/* This padding sets alignment of the nested nodes. */
+.example-tree .mat-nested-tree-node div[role="group"] {
+  padding-left: 40px;
+}
+
+
+
+
+.example-tree {
+  div [role="group"] > .mat-tree-node
+
+{
+  padding-right: 40px;
+}
+
+}
+
+h1,
+h3 {
+  color: green;
+  font-family: "Roboto", sans-serif;
+  text-align: left;
+}
+
+.mat-tree {
+  background: transparent;
+}
+
+.mat-tree-node {
+  color: black;
+}
+
+.tree-bg {
+  /*background: #F9F5F6;*/
+  background: white;
+  height: 95%;
+  max-width: 600px;
+  margin-top: -15px;
+  /* bottom: 45px;*/
+  overflow: auto;
+  /* overflow-y: auto;*/
+  padding: 0px 0px;
+}
+
+.comment-view {
+  font-family: 'Poppins', sans-serif;
+  /*overflow: hidden;*/
+  position: fixed;
+  visibility: hidden;
+  right: 0px;
+  top: 137px;
+  bottom: 30px;
+  height: calc(100vh - 225px);
+  max-width: 25%;
+  background: #F3F4FA;
+  color: #3C4157;
+  padding: 10px;
+  width: 90%;
+  z-index: 999;
+  /*  background-color: #595959;*/
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(171,169,171,1);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(171,169,171,1);
+  box-shadow: 0px 0px 5px 0px rgba(171,169,171,1);
+  .chat-list
+
+{
+  height: calc(100vh - 305px);
+  overflow-y: auto;
+  padding: 5px 15px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.input-fild {
+  position: absolute;
+  bottom: 0px;
+  height: 153px;
+  left: 0px;
+  width: 100%;
+  border-top: 1px solid #cccc;
+  font-family: 'Poppins', sans-serif;
+  .send-btn
+
+{
+  position: absolute;
+  left: 10px;
+  bottom: 2px;
+  font-family: 'Poppins', sans-serif;
+}
+
+}
+
+.close-box {
+  position: absolute;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  border-radius: 0;
+  top: 0px;
+  /* padding: 7px;*/
+  cursor: pointer;
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  color: #002060;
+}
+
+.header-box {
+  height: 45px;
+  padding: 0px 10px;
+  font-size: 18px;
+  font-weight: 600;
+  position: relative;
+  font-family: "Poppins", sans-serif;
+}
+
+}
+
+.comment-view.active {
+  visibility: visible;
+}
+
+
+.tablist {
+  overflow: auto;
+  padding: 10px;
+}
+
+
+  .tablist::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+.node__label {
+  /*color: #002060;*/
+  /* color: #87ceeb;*/
+  color: #002060;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.icons-box {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 20px;
+  width: 20px;
+  background-color: #FFFFFF;
+  position: absolute;
+  border-radius: 50%;
+  text-align: center;
+  color: #595959;
+  font-size: 18px;
+}
+
+
+.mat-icon notranslate mat-icon-rtl-mirror material-icons mat-ligature-font mat-icon-no-color {
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  text-align: center;
+  color: #595959;
+  font-size: 18px;
+  line-height: 22px;
+  padding-right: 5px;
+}
+
+.dropdown-icon-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: #002060;
+}
+
+hr {
+  height: 5px;
+  background-color: #002060;
+}
+
+.custom-checkbox {
+  background-color: black;
+}
+
+/*.example-tree.mat-tree-node[_ngcontent-ng-c3429406647] {
+  padding-right: 50px;
+}*/
+
+/*.example-tree[_ngcontent-ng-c3311033067] div[role="group"][_ngcontent-ng-c3311033067] > .mat-tree-node[_ngcontent-ng-c3311033067] {
+  padding-right: 40px !important;
+}*/
+
+.example-tree .mat-tree-node,
+.example-tree .mat-nested-tree-node {
+  position: relative;
+  margin-left: 10px;
+}
+
+.example-tree-progress-bar {
+  margin-left: 15px;
+}
+
+.example-tree-nested-node {
+  padding-left: 15px;
+}
+
+mat-tree {
+  margin-left: 5px;
+}
+
+.mat-tree-node {
+  padding: 0;
+  background-color: white;
+  white-space: nowrap;
+}
+
+.mat-nested-tree-node {
+  top: -24px;
+  white-space: nowrap;
+}
+
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 2px;
+}
+
+  li.example-tree-container {
+    border-bottom: 0;
+    height: 80%;
+  }
+
+ul {
+  padding-left: 5px;
+}
+
+li {
+  padding-left: 5px;
+  left: -2px;
+  border: 1px dotted grey;
+  border-width: 0 0 1px 1px;
+  position: relative;
+  top: -10px;
+}
+
+  li.mat-tree-node,
+  li div {
+    margin: 0;
+    position: relative;
+    top: 12px;
+  }
+
+  li ul {
+    border-top: 1px dotted grey;
+    margin-left: -10px;
+    padding-left: 20px;
+  }
+
+.mat-nested-tree-node:last-child ul {
+  border-left: 2px solid white;
+  margin-left: -6px;
+}
+
+.mat-icon-button {
+  z-index: 100;
+}
+
+.level-1 {
+  color: #070F2B;
+}
+
+.level-2 {
+  color: #116A7B;
+}
+
+.level-3 {
+  color: #9B4444;
+  /*overflow: hidden;*/
+}
+.level-4 {
+  color: blueviolet;
+}
+.export-button {
+  margin-left:52%;
+  border: 1px solid #1b68b3;
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 18px;
+  position: relative;
+}
+.modal-dialog-right {
+  position: fixed;
+  top: 25%;
+  right: 30px;
+  transform: translateX(50%) translateY(-50%);
+  transition: none;
+}
+.modal-header {
+    padding: 8px !important;
+}

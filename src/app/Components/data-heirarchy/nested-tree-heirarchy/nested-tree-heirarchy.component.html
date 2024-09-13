@@ -1,0 +1,87 @@
+<div class="comment-view" [ngClass]="{ active: showBox == true }">
+  <div class="header-box">
+    <span class="close-box" (click)="closeBox()">&#10006;</span>
+    <span style="color: #002060; ">Selected Model DataSet</span>
+  </div>
+  <main class="col tree-bg pt-3 pb-3">
+    <mat-tree [dataSource]="dataSource"
+              [treeControl]="treeControl"
+              class="example-tree">
+
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+        <!--<label class="node__label">-->
+        <!--<span class="custom-control custom-checkbox">
+        <input class="custom-control-input" type="checkbox" [disabled]="true" [ngModel]="node.check"/>
+        <span class="custom-control-label">{{ node.label }}</span>
+      </span>-->
+        <li>
+          <div class="mat-tree-node">
+            <span [ngClass]="'level-' + node.level">
+              <fa-icon [icon]="circleIcon" class="custom-size"></fa-icon>
+              {{node.parent_node}}
+            </span>
+          </div>
+        </li>
+        <!--</label>-->
+
+      </mat-tree-node>
+      <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+        <li class="example-tree-container">
+          <div class="mat-tree-node">
+            <!--<button class="dropdown-icon-button" mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.parent_node">
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>-->
+            <!--<label class="node__label">-->
+            <!--<span class="custom-control custom-checkbox">
+            <input class="custom-control-input" type="checkbox" [disabled]="true" [ngModel]="node.check" />
+            <span class="custom-control-label">{{ node.label }}</span>
+          </span>-->
+
+            <button style="cursor: pointer;" class="dropdown-icon-button" mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.parent_node">
+              <span *ngIf="!treeControl.isExpanded(node)" [ngClass]="'level-' + node.level"><fa-icon [icon]="arrowDownIcon"></fa-icon> {{node.parent_node}}</span>
+              <span *ngIf="treeControl.isExpanded(node)" [ngClass]="'level-' + node.level"><fa-icon [icon]="arrowRightIcon"></fa-icon> {{node.parent_node}}</span>
+            </button>
+            <button *ngIf="node.level == 1" type="button" class="btn export-button" (click)="exportAllModel(templateConfirmation, 'selected')">
+              <fa-icon [icon]="exportIcon" style="margin-left: -4px; color: #1b68b3" title="Export Selected Model Set"></fa-icon>
+            </button>
+            <!--</label>-->
+          </div>
+          <!--<div *ngIf = "isDefaultExpanded" [class.example-tree-invisible]="treeControl.isExpanded(node)" role="group">
+          <ng-container matTreeNodeOutlet></ng-container>
+        </div>-->
+          <!--<div class="third-level" [class.example-tree-invisible]="!treeControl.isExpanded(node)" role="group">
+          <ng-container matTreeNodeOutlet></ng-container>
+        </div>-->
+          <ul class="example-tree-nested-node">
+            <div *ngIf="!treeControl.isExpanded(node)">
+              <ng-container matTreeNodeOutlet></ng-container>
+            </div>
+          </ul>
+        </li>
+      </mat-nested-tree-node>
+    </mat-tree>
+  </main>
+</div>
+<ng-template #templateConfirmation>
+  <!--<div class="modal-dialog modal-dialog-right" role="document">-->
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 style="margin-bottom: 5px;">Confirm</h4>
+        <button type="button"
+                class="close pull-right"
+                aria-label="Close"
+                (click)="exportModalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6> Are you sure you want to Export Data?</h6>
+        <br />
+        <button type="button" class="btn btn-outline-success" style="margin-right: 5px" (click)="exportData()">Yes</button>
+        <button type="button" class="btn btn-outline-dark" (click)="decline()">No</button>
+      </div>
+    </div>
+  <!--</div>-->
+</ng-template>

@@ -1,0 +1,258 @@
+
+.comment-view {
+  font-family: 'Poppins', sans-serif;
+  overflow: auto;
+  position: fixed;
+  visibility: hidden;
+  right: 0px;
+  top: 137px;
+  height: 100%;
+  max-width: 700px;
+  background: #F3F4FA;
+  color: #3C4157;
+  padding: 10px;
+  width: 100%;
+  z-index: 999;
+  /*background-color: currentColor;*/
+  /*  background-color: #87ceeb;*/
+  /* background-color: #002060;*/
+  background-color: #F9F5F6;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(171,169,171,1);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(171,169,171,1);
+  box-shadow: 0px 0px 5px 0px rgba(171,169,171,1);
+  .chat-list
+
+{
+  height: calc(100vh - 305px);
+  overflow-y: auto;
+  padding: 5px 15px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.input-fild {
+  position: absolute;
+  bottom: 0px;
+  height: 153px;
+  left: 0px;
+  width: 100%;
+  border-top: 1px solid #cccc;
+  font-family: 'Poppins', sans-serif;
+  .send-btn
+
+{
+  position: absolute;
+  left: 10px;
+  bottom: 2px;
+  font-family: 'Poppins', sans-serif;
+}
+
+}
+
+.close-box {
+  position: absolute;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border-radius: 0;
+  top: 0px;
+  padding: 7px;
+  cursor: pointer;
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  color: #002060;
+}
+
+.header-box {
+  height: 55px;
+  padding: 7px 10px;
+  font-size: 18px;
+  font-weight: 600;
+  position: relative;
+  font-family: "Poppins", sans-serif;
+}
+
+}
+
+.comment-view.active {
+  visibility: visible;
+}
+
+
+.tablist {
+  overflow: auto;
+  padding: 10px;
+}
+
+
+  .tablist::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+.node__label {
+  /*color: #002060;*/
+  /* color: #87ceeb;*/
+  color: #002060;
+  cursor: pointer;
+}
+
+.icons-box {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 20px;
+  width: 20px;
+  background-color: #FFFFFF;
+  position: absolute;
+  border-radius: 50%;
+  text-align: center;
+  color: #595959;
+  font-size: 18px;
+}
+
+
+.mat-icon notranslate mat-icon-rtl-mirror material-icons mat-ligature-font mat-icon-no-color {
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  text-align: center;
+  color: #595959;
+  font-size: 18px;
+  line-height: 22px;
+  padding-right: 5px;
+}
+
+.dropdown-icon-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: #002060;
+}
+
+hr {
+  height: 5px;
+  background-color: #002060;
+}
+
+.custom-checkbox {
+  background-color: black;
+}
+
+$background: rgba(0,0,0,.73);
+$container-background: rgba(0,0,0,.45);
+$text: #a7a9ac;
+$text-hover: #fff;
+
+body {
+  background-color: $background;
+  color: white;
+}
+
+.container {
+  width: 25%;
+  height: 75%;
+  background: $container-background;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: overlay;
+}
+
+details {
+  //border-left: 1px solid;
+  padding-left: 16px;
+  padding-top: 8px;
+  position: relative;
+  outline: none;
+  
+  &:focus, &:active {
+    outline: none;
+  }
+  
+  &:last-child {
+    
+    &:before {
+      height: 16px;
+    }
+  }
+  
+  &:before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    top: -8px;
+    border-left: 1px dotted;
+  }
+  
+  &[open] {
+    
+    >summary {
+      
+      &::before {
+        width: 16px;
+      }
+      i {
+        &::before {
+          content: '\f1db';
+        }
+      }
+    }
+  }
+  
+  summary {
+    color: $text;
+    padding-left: 16px;
+    outline: none;
+    
+    &::-webkit-details-marker {
+      display: none
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      width: 0px;
+      top: 16px;
+      left: 16px;
+      border-bottom: 1px dotted;
+    }
+  
+    &:focus, &:active {
+      outline: none;
+    }
+    
+    &:hover {
+      color: $text-hover;
+      cursor: pointer;
+      
+      .selector {
+        transition: background-color 0.3s;
+				background-color: rgba(73, 73, 74, 0.71);
+      }
+    }
+    
+    i {
+      font-size: 18px;
+      margin-left: -22px;
+      margin-right: 20px;
+      width: auto;
+      background: #414042;
+      border-radius: 6px;
+    }
+    .selector {
+      position: absolute;
+      top: 0;
+      left: -200px;
+      right: 0;
+      bottom: 0;
+      height: 30px;
+      pointer-events: none;
+      border-bottom: 1px solid #383838;
+      z-index: -1;
+    }
+  }
+  
+}

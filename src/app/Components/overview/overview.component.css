@@ -1,7 +1,21 @@
+
+
 #sect1 {
-  height: 650px;
+  display: flex;
+  justify-content: center; /* horizontally center */
+  align-items: center; /* vertically center */
+  height: 600px;
+  width: 100%; /* full width */
   color: #fff;
-  background-image: url("../../Images/Overview4.png");
-  background-size: 100%;
   background-size: cover;
+  margin-top: 180px;
+  margin-left: -20px;
+}
+
+.centered-img {
+  width: 120%;
+  height:auto;
+  overflow:hidden;
+ /* max-width: 100%;
+  max-height: 100%;*/
 }
