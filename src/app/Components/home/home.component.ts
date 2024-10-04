@@ -60,7 +60,7 @@ export class HomeComponent {
   public selectedClient: string;
 
   constructor(private filterapiService: FilterApiService) {
-    this.selectedClient = "Standard";
+    this.selectedClient = "None";
   }
 
   IsDataVisible: boolean = false;
@@ -217,6 +217,10 @@ export class HomeComponent {
   //  this.GetFilterData(this.selectedCluster.join(', '));
   //}
 
+  getSelectedClientLabel() {
+    this.selectedClient = this.clients[0];
+  }
+
   getSelectedClustersLabel() {
     //const selectedClusters = this.clusters.filter((cluster) => cluster.checked).map((cluster) => cluster.label);
     //this.selectedCluster = this.clusters.filter((cluster) => cluster.checked).map((cluster) => cluster.label);
@@ -235,7 +239,7 @@ export class HomeComponent {
       return this.selectedCluster.join(', ');
     }
     else {
-      return 'None';
+      return 'All';
     }
   }
 
@@ -245,7 +249,7 @@ export class HomeComponent {
       return this.selectedSubCluster.join(', ');
     }
     else {
-      return 'None';
+      return 'All';
     }
   }
 
@@ -255,7 +259,7 @@ export class HomeComponent {
       return this.selectedCategory.join(', ');
     }
     else {
-      return 'None';
+      return 'All';
     }
   }
 
@@ -265,7 +269,7 @@ export class HomeComponent {
       return this.selectedSubCategory.join(', ');
     }
     else {
-      return 'None';
+      return 'All';
     }
   }
 
@@ -399,5 +403,11 @@ export class HomeComponent {
     let cluster = this.selectedCluster;
     let subcluster = this.selectedSubCluster;
     this.IsDataVisible = true;
+  }
+
+  OnResetClecked() {
+    this.selectedClient = 'None';
+    this.selectedCluster.length = 0;
+    this.selectedCategory.length = 0;
   }
 }

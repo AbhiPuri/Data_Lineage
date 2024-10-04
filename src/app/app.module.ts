@@ -20,6 +20,8 @@ import { TreeLoaderComponent } from './Components/data-heirarchy/tree-loader/tre
 import { CommonModule } from "@angular/common";
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ToastrModule } from "ngx-toastr";
 import { LoginComponent } from './Components/login/login.component';
 
 //import { UiSwitchModule } from 'ngx-toggle-switch';
@@ -56,7 +58,15 @@ import { ClipboardModule } from 'ngx-clipboard';
     ClipboardModule,
     CommonModule,
     MatTreeModule,
-    MatIconModule
+    MatIconModule,
+    NgSelectModule,
+    ToastrModule.forRoot(
+      {
+        positionClass: 'toast-bottom-right',
+        preventDuplicates: true,
+        closeButton: true,
+      }
+    )
     //UiSwitchModule,
     //MatSlideToggleModule
   ],

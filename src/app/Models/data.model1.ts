@@ -21,6 +21,5 @@ export interface DataModel {
   scdModelName: string,
   scdFieldDefinition: string,
   scdFieldMandatory: string,
-  cost: number,
-  isClientSelected: boolean
+  cost: number
 }

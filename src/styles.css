@@ -1,14 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~ngx-toastr/toastr';
 @import '~bootstrap/dist/css/bootstrap.css';
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
 .modal-open {
   overflow-y: scroll;
 }
 
 .form-control.input-search {
-  height: 38px;
-  min-width: 200px;
+  height: 24px;
+  width: 200px !important;
 }
 
 form-inline justify-content-dropdown-end {
@@ -19,11 +21,11 @@ form-inline justify-content-dropdown-end {
 }
 
 .form-inline.justify-content-end {
-  margin-left: 55%;
+  margin-left: 30%;
   margin-bottom:5px;
   height: 34px !important;
   min-height: 30px;
-  max-width: 200px;
+  max-width: 400px;
 }
 
 .form-inline.justify-content-icon-end {
@@ -55,7 +57,7 @@ form-inline justify-content-dropdown-end {
   padding-right: 5px;
   flex-wrap: wrap;
   align-items: stretch;
-  width: 20%;
+  width: 225px !important;
 }
 .multiselect-dropdown .dropdown-btn {
   max-height: 3em !important;
@@ -83,7 +85,7 @@ form-inline justify-content-dropdown-end {
 }
 
 tr:nth-child(even) {
-  background: #e7feff;
+  background: #e7feff !important;
 }
 
 th {
@@ -92,6 +94,7 @@ th {
   min-width: stretch;
 }
 .table-container {
+  height: 600px;
   white-space: nowrap;
   border-spacing: 30px;
   position: relative;
@@ -191,3 +194,21 @@ input[type="checkbox"] {
   border-radius: 50%;
   vertical-align: central;
 }
+::ng-deep.ng-select-container {
+  border-bottom: 1px solid red !important;
+}
+.btn-submit {
+  width: 80px;
+  height: 36px !important;
+  border-radius: 4px !important;
+  font-size: 17px !important;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 2px 2px !important;
+  text-align: center;
+  background-color: #1b68b3 !important;
+  border: 1px solid #1b68b3 !important;
+  background-image: none !important;
+  margin-left:5px;
+}
+

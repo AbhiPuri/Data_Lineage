@@ -25,23 +25,23 @@
 
   <div class="offcanvas offcanvas-start text-bg-dark" style="margin-top:55px" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Data Model Filteration</h5>
+      <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Model Explorer</h5>
       <button type="button" class="btn-close btn-close-white" data-bs-toggle="collapse" data-bs-target="#offcanvasDarkNavbar" (click)="toggleOffcanvas()"></button>
     </div>
     <div class="offcanvas-body">
       <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 
         <li>
-          <label>Client</label>
-          <select class="form-control" [(ngModel)]="selectedClient" (change)="clientSelectionChanged()" style="margin: 5px; margin-top:10px">
-            <option>None</option>
+          <label>Model</label>
+          <select class="form-control" [(ngModel)]="selectedClient" (change)="clientSelectionChanged()" style="margin: 5px; margin-top:10px; max-height: 240px; overflow-y: auto;">
+            <option>{{selectedClient}}</option>
             <option *ngFor="let client of clients">{{client}}</option>
           </select>
           <hr />
         </li>
 
         <li *ngIf="selectedClient != 'None'">
-          <label>Cluster</label>
+          <label>Service Catalogue</label>
           <div class="dropdown" style="margin: 5px; margin-top:10px; width:350px">
             <button class="dropdown-toggle"
                     type="button"
@@ -52,7 +52,7 @@
                     style="height:40px; width:350px; border-radius:8px; text-align:start">
               {{ getSelectedClustersLabel() }}
             </button>
-            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px">
+            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px; max-height: 240px; overflow-y: auto;">
               <label class="dropdown-item" *ngFor="let cluster of clusters">
                 <input type="checkbox" [(ngModel)]="cluster.checked" name="selectedCluster" (change)="ClusterCheckboxChanged(cluster)" />
                 {{cluster.label}}
@@ -63,7 +63,7 @@
         </li>
 
         <li *ngIf="selectedCluster.length > 0">
-          <label>Sub-Cluster</label>
+          <label>Service Segment</label>
           <div class="dropdown" style="margin: 5px; margin-top:10px; width:350px">
             <button class="dropdown-toggle"
                     type="button"
@@ -74,9 +74,9 @@
                     style="height:40px; width:350px; border-radius:8px; text-align:start">
               {{ getSelectedSubClustersLabel() }}
             </button>
-            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px">
+            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px; max-height: 240px; overflow-y: auto;">
               <label class="dropdown-item" *ngFor="let subCluster of subClusters">
-                <input type="checkbox" [(ngModel)]="subCluster.checked" name="selectedSubCluster" />
+                <input type="checkbox" [(ngModel)]="subCluster.checked" name="selectedSubCluster"/>
                 {{subCluster.label}}
               </label>
             </div>
@@ -96,7 +96,7 @@
                     style="height:40px; width:350px; border-radius:8px; text-align:start">
               {{ getSelectedCategoriesLabel() }}
             </button>
-            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px">
+            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px; max-height: 240px; overflow-y: auto;">
               <label class="dropdown-item" *ngFor="let category of categories">
                 <input type="checkbox" [(ngModel)]="category.checked" name="selectedCategory" (change)="CategoryCheckboxChanged(category)" />
                 {{category.label}}
@@ -118,7 +118,7 @@
                     style="height:40px; width:350px; border-radius:8px; text-align:start">
               {{ getSelectedSubCategoriesLabel() }}
             </button>
-            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px">
+            <div class="dropdown-menu" aria-labelledby="multiSelect" style="width:350px; max-height: 240px; overflow-y: auto;">
               <label class="dropdown-item" *ngFor="let subCategory of subCategories">
                 <input type="checkbox" [(ngModel)]="subCategory.checked" name="selectedSubCategory" />
                 {{subCategory.label}}
@@ -175,7 +175,8 @@
       </ul>
       <form *ngIf="selectedClient != 'None'" class="d-flex mt-3" role="search">
         <!--<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
-        <button class="btn btn-success" type="submit" data-bs-toggle="collapse" data-bs-target="#offcanvasDarkNavbar" style="margin-left:280px" (click)="OnSearchClicked()">Search</button>
+        <button class="btn btn-success" type="submit" data-bs-toggle="collapse" data-bs-target="#offcanvasDarkNavbar" style="margin-left:200px" (click)="OnSearchClicked()">Search</button>
+        <button class="btn btn-success" type="reset" style="margin-left:20px; cursor: pointer;" (click)="OnResetClecked()">Clear</button>
       </form>
     </div>
   </div>

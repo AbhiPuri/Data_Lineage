@@ -1,7 +1,7 @@
 <div class="page-alignment">
-  <div class="row ml-0 mr-0 pr-3 pt-4">
+  <!--<div class="row ml-0 mr-0 pr-3 pt-4">
     <div class="col-9">
-      <h3> Data Model Filteration</h3>
+      <h3> Data Model Filteration ({{clientName}})</h3>
     </div>
     <div class="col-3">
 
@@ -9,22 +9,19 @@
 
         <div class="input-group mr-2">
           <input type="text" class="form-control input-search" [(ngModel)]="filterSearchText" placeholder="Search" (keyup.enter)="search()">
-
-          <div class="input-group-append">
-            <span class="input-group-text" (click)="search()">
-              <fa-icon [icon]="searchIcon"></fa-icon>
-            </span>
-          </div>
-        </div>
+  <div class="input-group-append">
+    <span class="input-group-text" (click)="search()">
+      <fa-icon [icon]="searchIcon"></fa-icon>
+    </span>
+  </div>
+  </div>
 
       </div>
     </div>
-  </div>
-  <!--<div class="row" *ngIf="modelData.length > 0">-->
-  <div class="row">
+  </div>-->
+  <div class="row" *ngIf="modelData.length > 0">
 
-    <!--<div class="col-3" *ngIf="categoryList.length > 0">-->
-    <div class="col-3">
+    <div class="col-3" *ngIf="categoryList.length > 0">
       <div class="form-group pr-2">
         <ng-multiselect-dropdown [placeholder]="'Select Category'"
                                  [settings]="dropdownSettings"
@@ -36,8 +33,7 @@
         </ng-multiselect-dropdown>
       </div>
     </div>
-    <!--<div class="col-3" *ngIf="subCategoryList.length > 0">-->
-    <div class="col-3">
+    <div class="col-3" *ngIf="subCategoryList.length > 0">
       <div class="form-group pr-2">
         <ng-multiselect-dropdown [placeholder]="'Select Sub Category'"
                                  [settings]="dropdownSettings"
@@ -52,38 +48,77 @@
 
     <div class="col-6" style="margin-top: 5px">
 
-      <!--<div style="margin-left: 70%">
-      <button type="button" class="btn btn-success mr-2" (click)="exportSegregatedData()">
-        <fa-icon [icon]="exportIcon" title="Export Segregated Data"></fa-icon>
-      </button>
-    </div>-->
+      <!--<div [ngStyle]="{'margin-left': isSearchEnabled ? '43%' : '64%'}">
+    <input *ngIf="isSearchEnabled" type="text" class="form-control input-search" [(ngModel)]="filterSearchText" placeholder="Search" (keyup.enter)="search()">
+    <div class="input-group-append">
+      <span class="input-group-text">
+        <button type="button" class="btn btn-success pull-right mr-2" placement="right" (click)="searchEnable()">
+          <fa-icon style="right: 10px; top: 6px;" [icon]="searchIcon" title="Search"></fa-icon>
+        </button>
+      </span>
+    </div>
+  </div>-->
 
-      <div style="margin-left: 76%">
+      <div *ngIf="isClientSelected && !isSavedClient" [ngStyle]="{'margin-left': isSearchEnabled ? '38%' : '62%'}" placement="right">
+        <button type="button" class="btn btn-success pull-right mr-2" style="width:60px"
+                (click)="openSaveModal(savetemplate)" tooltip="Save">
+          Save
+        </button>
+      </div>
+
+      <div class="btn btn-success input-group pull-right mr-2" *ngIf="isSearchEnabled" style="margin-left: 22%;max-width: 400px;" placement="right">
+        <input type="text" class="form-control input-search" [(ngModel)]="filterSearchText" placeholder="Search" (keyup.enter)="search(false)">
+      </div>
+      <div style="margin-left:69%">
+        <button type="button" class="btn btn-success pull-right mr-2" placement="right" (click)="search(true)">
+          <fa-icon style="right: 10px; top: 6px;" [icon]="searchIcon" title="Search"></fa-icon>
+        </button>
+      </div>
+      <div style="margin-left:74%">
+        <button type="button" class="btn btn-success pull-right mr-2" placement="right" (click)="openCloneModal(clonetemplate)">
+          <fa-icon style="right: 10px; top: 6px;" [icon]="cloneIcon" title="Clone Model"></fa-icon>
+        </button>
+      </div>
+      <div style="margin-left: 79%">
         <button type="button" class="btn btn-success mr-2" (click)="exportAllModel(templateConfirmation, 'selected')">
           <fa-icon [icon]="selectedExportIcon" title="Export Selected Model Set"></fa-icon>
         </button>
       </div>
-
-      <div style="margin-left: 82%">
+      <div style="margin-left: 84%">
         <button type="button" class="btn btn-success mr-2" (click)="exportAllModel(templateConfirmation, 'allData')">
           <fa-icon [icon]="exportIcon" title="Export All"></fa-icon>
         </button>
       </div>
-      <div style="margin-left: 88%">
+      <div style="margin-left: 89%">
         <button type="button" class="btn btn-success mr-2" (click)="openHierarchyModal()">
           <fa-icon [icon]="treeIcon" title="Tree Popup"></fa-icon>
         </button>
       </div>
       <div style="margin-left:94%">
-        <button type="button" class="btn btn-success pull-right mr-2" placement="right" (click)="openModal(template)">
-          <fa-icon style="right: 10px; top: 6px;" [icon]="columnChooserIcon" title="Column Chooser"></fa-icon>
+        <button type="button" class="btn btn-success pull-right mr-2" style="cursor:pointer" placement="right" (click)="openModal(template)">
+          <fa-icon style="right: 10px; top: 6px;cursor: pointer" [icon]="columnChooserIcon" title="Column Chooser"></fa-icon>
         </button>
       </div>
     </div>
     <!--<div class="col-3">
 
-  </div>-->
+    </div>-->
   </div>
+
+  <!--<div class="row" style="padding-top:5px" *ngIf="isClonedModel">
+    <div class="col-2" *ngIf="!isClientSelected">
+      <div class="form-group" *ngIf="clientArray.length > 0">
+        <ng-select [items]="clientArray"
+                   placeholder="Select Client"
+                   bindLabel="CLIENT_NAME"
+                   bindValue="CLIENT_ID"
+                   [(ngModel)]="selectedClientItem"
+                   (change)="onClientChange($event)">
+        </ng-select>
+      </div>
+    </div>
+   
+  </div>-->
 
   <div class="row ml-0 mr-0 pr-3">
     <div class="col white-bg pt-3 pb-3 table-body">
@@ -112,9 +147,9 @@
             <!--<div class="sub-accordion-body" *ngIf="(subAccordion[i].includes(rIndex))">-->
             <div class="sub-accordion-body table-container" [ngStyle]="{'width': showBox ? '76%' : '100%'}" *ngIf="subAccordion.includes(rIndex) && mainAccordion.includes(i+1) && i == mainAccIndex">
               <table class="table-1">
-                <thead>
+                <thead [ngClass]="{ 'sticky-cell-bold': isClonedModel && !isSavedClient}">
                   <tr>
-                    <th style="margin-right: 5px;">Actions</th>
+                    <th [ngClass]="{ 'sticky-cell-header': isClonedModel && !isSavedClient }" *ngIf="isClonedModel && !isSavedClient" style="margin-right: 5px;">Actions</th>
                     <ng-container *ngFor="let defaultViewColumn of defaultViewColumns">
                       <th *ngIf="defaultViewColumn.showColumn === true">
                         <span (click)="sort('id', rIndex)" *ngIf="defaultViewColumn.columnName === 'Id'">
@@ -208,8 +243,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let listColumn of subCluster.gridDataList" style="width:100%;">
-                    <td>
+                  <tr *ngFor="let listColumn of subCluster.gridDataList" [ngClass]="{ 'row-selected': listColumn.isClientSelected && !isSavedClient, 'row-not-selected': !listColumn.isClientSelected && isClonedModel && !isSavedClient }" style="width:100%;">
+                    <td [ngClass]="{ 'sticky-cell-body': isClonedModel && !isSavedClient, 'row-selected': listColumn.isClientSelected && !isSavedClient, 'row-not-selected': !listColumn.isClientSelected && isClonedModel && !isSavedClient }" *ngIf="isClonedModel && !isSavedClient">
                       <button class="plus-button" *ngIf="!newDataList.includes(listColumn.id)" (click)="addData(listColumn)">
                         <fa-icon [icon]="plusIcon"></fa-icon>
                       </button>
@@ -307,7 +342,7 @@
 
 <div *ngIf="showBox">
   <!--<app-tree-loader [showBox]="showBox"></app-tree-loader>-->
-  <app-nested-tree-heirarchy [modelData]="modelData" [newDataList]="newDataList" [showBox]="showBox" [clusterAccordion] ="clusterAccordion"
+  <app-nested-tree-heirarchy [modelData]="modelData" [newDataList]="newDataList" [showBox]="showBox" [clusterAccordion]="clusterAccordion"
                              (onShowAssetsOutput)="hideAssetsBox($event)" (onExport)="exportData('','','selected')"></app-nested-tree-heirarchy>
 </div>
 
@@ -343,5 +378,77 @@
     <button type="button" *ngIf="isSelectedExported == false" class="btn btn-outline-success" style="margin-right: 5px" (click)="exportData('','','all')">Yes</button>
     <button type="button" *ngIf="isSelectedExported == true" class="btn btn-outline-success" style="margin-right: 5px" (click)="exportData('','','selected')">Yes</button>
     <button type="button" class="btn btn-outline-dark" (click)="decline()">No</button>
+  </div>
+</ng-template>
+
+<ng-template #clonetemplate>
+  <div class="modal-header text-center">
+    <h3 class="head-titel mb-0 mt-3">Confirm</h3>
+    <button type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="cloneModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h5> Are you sure you want to clone {{clientName}} model</h5>
+    <br />
+    <button type="button" *ngIf="isSelectedExported == false" class="btn btn-outline-success" style="margin-right: 5px" (click)="cloneConfirm(clienttemplate)">Yes</button>
+    <button type="button" class="btn btn-outline-dark" (click)="clonedecline()">No</button>
+  </div>
+</ng-template>
+
+<ng-template #clienttemplate>
+  <div class="modal-header text-center">
+    <h3 class="head-titel mb-0 mt-3">Client</h3>
+    <button type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="clientModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style=" height: 250px!important; overflow-y: auto;">
+    <h6>Please select the client for which you are clonning the STANDARD Model</h6>
+    <div class="row" style="padding-top:5px">
+      <div class="col-6">
+        <div class="form-group" *ngIf="clientArray.length > 0">
+          <ng-select [items]="clientArray"
+                     placeholder="Select Client"
+                     bindLabel="CLIENT_NAME"
+                     bindValue="CLIENT_ID"
+                     [(ngModel)]="selectedClientItem"
+                     (change)="onClientChange($event)">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <br />
+  </div>
+  <div class="modal-footer">
+    <button type="button" *ngIf="isSelectedExported == false" class="btn btn-outline-success" style="margin-right: 5px" (click)="clientConfirm()">Yes</button>
+    <button type="button" class="btn btn-outline-dark" (click)="clientDecline()">No</button>
+  </div>
+
+
+</ng-template>
+
+
+<ng-template #savetemplate>
+  <div class="modal-header text-center">
+    <h3 class="head-titel mb-0 mt-3">Confirm</h3>
+    <button type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="saveModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h5> Are you sure you want to Save {{clientName}} model</h5>
+    <br />
+    <button type="button" *ngIf="isSelectedExported == false" class="btn btn-outline-success" style="margin-right: 5px" (click)="saveConfirm()">Yes</button>
+    <button type="button" class="btn btn-outline-dark" (click)="savedecline()">No</button>
   </div>
 </ng-template>
